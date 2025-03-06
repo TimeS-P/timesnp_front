@@ -1,42 +1,24 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import ModalLogin from "../Login/ModalLogin";
+import LogoNav from "./LogoNav";
+import Categorias from "./Categorias";
+import Buscador from "./Buscador";
+import Menu from "./Menu";
+import Notifiacion from "./Notifiacion";
 
 function Navbar() {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-
-  const handleOpenLoginModal = () => {
-    setIsLoginModalOpen(true);
-  };
-
-  const handleCloseLoginModal = () => {
-    setIsLoginModalOpen(false);
-  };
-
   return (
     <>
-      <nav className="flex items-center justify-between p-4 bg-gray-100">
-        <div className="flex items-center gap-4">
-          <Link to="/" className="text-blue-600 hover:text-blue-800 font-medium">
-            Inicio
-          </Link>
-          <Link to="/about" className="text-blue-600 hover:text-blue-800 font-medium">
-            Acerca de
-          </Link>
+      <nav className="flex items-center justify-between py-4 px-12 bg-[#F1E0CC]">
+        <LogoNav />
+        <div className="flex flex-col items-center space-y-4">
+          <Categorias />
+          <Buscador />
         </div>
-        
-        <button 
-          onClick={handleOpenLoginModal}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
-        >
-          Iniciar Sesión
-        </button>
+        <div className="flex items-center">
+          <Notifiacion />
+          <Menu/>
+        </div>
       </nav>
-      
-      <ModalLogin 
-        isOpen={isLoginModalOpen} 
-        onClose={handleCloseLoginModal}
-      />
+  
     </>
   );
 }
