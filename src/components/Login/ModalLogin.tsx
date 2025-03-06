@@ -1,5 +1,7 @@
-import ImagenLogin from "./ImagenLogin";
+import { useState } from "react";
 import Login from "./Login";
+import ForgotPassword from "../RecuperarContraseña/ForgotPassword";
+import ImagenLogin from "./ImagenLogin";
 
 interface ModalLoginProps {
   isOpen: boolean;
@@ -7,18 +9,40 @@ interface ModalLoginProps {
 }
 
 function ModalLogin({ isOpen, onClose }: ModalLoginProps) {
+  const [activeView, setActiveView] = useState('login');
+
   if (!isOpen) return null;
+
+  const handleSwitchToForgotPassword = () => {
+    setActiveView('forgotPassword');
+  };
+
+  const handleBackToLogin = () => {
+    setActiveView('login');
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-black rounded-lg overflow-hidden w-full max-w-4xl">
-        <div className="flex flex-row">
-          {/* Lado izquierdo - Imagen o contenido */}
+      <div className="bg-white rounded-lg shadow-xl overflow-hidden w-full max-w-3xl flex">
+        {/* Sección de imagen - mantenemos esto igual */}
+        <div className="hidden md:block w-1/2 bg-[#162C51]">
           <ImagenLogin />
-
-          {/* Lado derecho - Formulario de login */}
-          <Login onClose={onClose} />
         </div>
+        
+        {/* Alternamos entre Login y ForgotPassword basado en el estado */}
+        {activeView === 'login' ? (
+          <Login 
+            onClose={onClose} 
+            onSwitchToForgotPassword={handleSwitchToForgotPassword} 
+          />
+        ) : (
+          <ForgotPassword 
+            isOpen={true} 
+            onReturn={handleBackToLogin}
+            onClose={onClose} 
+            setActiveView={setActiveView}
+          />
+        )}
       </div>
     </div>
   );

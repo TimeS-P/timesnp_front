@@ -1,12 +1,19 @@
+import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import ButtonAzul from "../Botones/ButtonAzul";
 import InputAzul from "../Inputs/InputAzul";
 
 interface LoginProps {
   onClose: () => void;
+  onSwitchToForgotPassword: () => void; // Nueva prop para cambiar la vista
 }
 
-function Login({ onClose }: LoginProps) {
+function Login({ onClose, onSwitchToForgotPassword }: LoginProps) {
+  const handleForgotPasswordClick = () => {
+    // Llamamos a la función del padre para cambiar la vista
+    onSwitchToForgotPassword();
+  };
+
   return (
     <div className="w-1/2 bg-white p-8 flex flex-col justify-center baloo-2">
       <div className="flex justify-between items-center mb-6">
@@ -33,7 +40,10 @@ function Login({ onClose }: LoginProps) {
       </div>
 
       <div className="flex justify-end mb-6">
-        <button className="text-sm text-[#162C51] hover:text-[#33599a] underline">
+        <button
+          className="text-sm text-[#162C51] hover:text-[#33599a] underline"
+          onClick={handleForgotPasswordClick}
+        >
           ¿Olvidaste tu contraseña?
         </button>
       </div>
