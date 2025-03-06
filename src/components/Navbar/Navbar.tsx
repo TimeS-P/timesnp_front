@@ -18,7 +18,6 @@ function Navbar() {
           <Menu/>
         </div>
       </nav>
-  
     </>
   );
 }

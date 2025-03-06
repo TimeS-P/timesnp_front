@@ -5,11 +5,12 @@ import ModalLogin from "../Login/ModalLogin";
 function Menu() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Simula el estado de sesión
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleOpenLoginModal = () => {
     if (!isLoggedIn) {
       setIsLoginModalOpen(true);
+      setIsDropdownOpen(false);
     }
   };
 
@@ -23,43 +24,56 @@ function Menu() {
 
   return (
     <>
-      <div
-        onClick={handleMenuClick}
-        className="relative flex items-center bg-white rounded-full p-2 space-x-2 cursor-pointer"
-      >
-        {/* Botón de Menú */}
-        <div className="flex items-center justify-center w-12 h-12 rounded-full">
-          <IoMenu className="text-2xl" />
-        </div>
+      <div className="relative ml-4">
+        <button
+          onClick={handleMenuClick}
+          className="flex items-center space-x-2 bg-white hover:bg-gray-100 p-2 rounded-full border border-gray-200 transition-all duration-300"
+        >
+          <div className="hidden sm:flex items-center justify-center w-8 h-8">
+            <IoMenu className="text-xl text-gray-700" />
+          </div>
+          <img
+            src="https://i.pinimg.com/474x/2e/4f/d3/2e4fd3fd8f2aff9c26b15c1f1c23b11e.jpg"
+            alt="User Profile"
+            className="w-8 h-8 rounded-full object-cover border-2 border-white shadow-sm"
+          />
+        </button>
 
-        {/* Imagen de perfil */}
-        <img
-          src="https://i.pinimg.com/474x/2e/4f/d3/2e4fd3fd8f2aff9c26b15c1f1c23b11e.jpg"
-          alt="User Profile"
-          className="w-11 h-11 rounded-full"
-        />
-
-        {/* Dropdown Menu */}
         {isDropdownOpen && (
-          <div className="absolute top-14 right-0 w-48 bg-white shadow-lg rounded-lg py-2">
-            <ul className="text-sm">
-              <li className="p-3 hover:bg-gray-100 cursor-pointer">Perfil</li>
-              <li className="p-3 hover:bg-gray-100 cursor-pointer">
-                Contrataciones
+          <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg overflow-hidden z-10">
+            <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
+              <p className="text-sm font-medium text-gray-900">Usuario</p>
+              <p className="text-xs text-gray-500">usuario@ejemplo.com</p>
+            </div>
+            <ul>
+              <li>
+                <a href="/perfil" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150">
+                  <span className="flex items-center">
+                    Editar perfil
+                  </span>
+                </a>
               </li>
-              {/* Línea divisoria */}
-              <hr className="my-2 border-t border-gray-300" />
-              <li
-                className="p-3 hover:bg-gray-100 cursor-pointer  font-medium text-[#162C51]"
-                onClick={handleOpenLoginModal}
-              >
-                {isLoggedIn ? "Cerrar sesión" : "Iniciar sesión"}
+              <li>
+                <a href="/contrataciones" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150">
+                  <span className="flex items-center">
+                    Contrataciones
+                  </span>
+                </a>
+              </li>
+              <li className="border-t border-gray-100">
+                <button 
+                  onClick={handleOpenLoginModal}
+                  className="block w-full text-left px-4 py-3 text-sm font-medium text-[#162C51] hover:bg-gray-50 transition-colors duration-150"
+                >
+                  <span className="flex items-center">
+                    {isLoggedIn ? "Cerrar sesión" : "Iniciar sesión"}
+                  </span>
+                </button>
               </li>
             </ul>
           </div>
         )}
       </div>
-      {/* Modal de Login */}
       <ModalLogin isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} />
     </>
   );
