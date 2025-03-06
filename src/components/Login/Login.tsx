@@ -1,4 +1,6 @@
 import { IoClose } from "react-icons/io5";
+import ButtonAzul from "../Botones/ButtonAzul";
+import InputAzul from "../Inputs/InputAzul";
 
 interface LoginProps {
   onClose: () => void;
@@ -15,20 +17,18 @@ function Login({ onClose }: LoginProps) {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1 text-[#162C51]">Correo</label>
-        <input
+        <InputAzul
+          label="Correo electrónico"
           type="email"
           placeholder="tucorreo@ejemplo.com"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#162C51]"
         />
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1 text-[#162C51]">Contraseña</label>
-        <input
+        <InputAzul
+          label="Contraseña"
           type="password"
-          placeholder="Ingresa tu contraseña"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#162C51]"
+          placeholder="Ingrese la contraseña"
         />
       </div>
 
@@ -39,9 +39,7 @@ function Login({ onClose }: LoginProps) {
       </div>
 
       <div className="flex flex-col gap-2 mb-6">
-        <button className="w-full bg-[#162C51] text-white py-2 rounded-md hover:bg-[#7483A2] transition-colors">
-          Iniciar sesión
-        </button>
+        <ButtonAzul texto="Iniciar sesión" />
       </div>
 
       <div className="flex items-center mb-6">
