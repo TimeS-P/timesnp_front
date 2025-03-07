@@ -1,7 +1,7 @@
 function ImagenLogin() {
   return (
     <div
-      className="h-[500px] flex items-center justify-center text-white text-2xl bg-cover bg-center relative"
+      className="w-full h-full flex items-center justify-center text-white text-2xl bg-cover bg-center relative rounded-tl-xl rounded-bl-xl"
       style={{ backgroundImage: "url('/FondoLogin.png')" }}
     >
       <img
