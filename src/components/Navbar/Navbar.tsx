@@ -2,7 +2,7 @@ import LogoNav from "./LogoNav";
 import Categorias from "./Categorias";
 import Buscador from "./Buscador";
 import Menu from "./Menu";
-import Notifiacion from "./Notifiacion";
+import ButtonNotificacion from "./ButtonNotificacion";
 
 function Navbar() {
   return (
@@ -14,7 +14,7 @@ function Navbar() {
           <Buscador />
         </div>
         <div className="flex items-center">
-          <Notifiacion />
+          <ButtonNotificacion />
           <Menu/>
         </div>
       </nav>

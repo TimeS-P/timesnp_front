@@ -1,7 +1,7 @@
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { useState } from 'react';
 
-function Notifiacion() {
+function ButtonNotificacion() {
   const [isOpen, setIsOpen] = useState(false);
   const notificationCount = 5;
 
@@ -41,4 +41,4 @@ function Notifiacion() {
   );
 }
 
-export default Notifiacion;
+export default ButtonNotificacion;
