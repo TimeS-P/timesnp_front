@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Login from "./Login";
-import ForgotPassword from "../RecuperarContraseña/ForgotPassword";
+import Login from "../Modals/ModalLogin";
+import ModalForgotPassword from "../Modals/ModalForgotPassword";
 import ImagenLogin from "./ImagenLogin";
 
 interface ModalLoginProps {
@@ -12,7 +12,7 @@ function ModalLogin({ isOpen, onClose }: ModalLoginProps) {
   const [activeView, setActiveView] = useState('login');
 
   if (!isOpen) return null;
-
+  
   const handleSwitchToForgotPassword = () => {
     setActiveView('forgotPassword');
   };
@@ -36,8 +36,7 @@ function ModalLogin({ isOpen, onClose }: ModalLoginProps) {
             onSwitchToForgotPassword={handleSwitchToForgotPassword} 
           />
         ) : (
-          <ForgotPassword 
-            isOpen={true} 
+          <ModalForgotPassword 
             onReturn={handleBackToLogin}
             onClose={onClose} 
             setActiveView={setActiveView}

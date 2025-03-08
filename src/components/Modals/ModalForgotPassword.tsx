@@ -1,30 +1,54 @@
 import { IoClose } from "react-icons/io5";
-import ButtonAzul from "../Botones/ButtonAzul";
 import InputAzul from "../Inputs/InputAzul";
+import { usePasswordRecovery } from "../../hooks/ForgotPassword/usePasswordRecovery";
+import Notification from "../Notificaciones/Notificacion";
+import LoadingButton from "../Botones/LoadingButton";
 
-interface ForgotPasswordProps {
-  isOpen: boolean;
+interface ModalForgotPasswordProps {
   onReturn: () => void;
   onClose: () => void;
   setActiveView?: (view: string) => void;
 }
 
-function ForgotPassword({ isOpen, onReturn, onClose, setActiveView }: ForgotPasswordProps) {
-  if (!isOpen) return null;
+function ModalForgotPassword({
+  onReturn,
+  onClose,
+  setActiveView,
+}: ModalForgotPasswordProps) {
+  const {
+    email,
+    isLoading,
+    notification,
+    handleEmailChange,
+    sendRecoveryEmail,
+    hideNotification
+  } = usePasswordRecovery();
 
   const handleActiveLogin = () => {
     if (setActiveView) {
-      setActiveView('login');
+      setActiveView("login");
     }
     onClose();
-  }
+  };
+
   return (
-    <div className="w-1/2 bg-white p-8 flex flex-col justify-center baloo-2">
+    <div className="w-1/2 bg-white p-8 flex flex-col justify-center baloo-2 relative">
+      {/* Notificación */}
+      <Notification
+        show={notification.show}
+        message={notification.message}
+        isSuccess={notification.isSuccess}
+        onClose={hideNotification}
+      />
+
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-[#162C51]">
           Recuperar contraseña
         </h2>
-        <button onClick={handleActiveLogin} className="text-gray-500 hover:text-gray-700">
+        <button
+          onClick={handleActiveLogin}
+          className="text-gray-500 hover:text-gray-700"
+        >
           <IoClose className="h-6 w-6" />
         </button>
       </div>
@@ -39,11 +63,17 @@ function ForgotPassword({ isOpen, onReturn, onClose, setActiveView }: ForgotPass
           label="Correo electrónico"
           type="email"
           placeholder="tucorreo@ejemplo.com"
+          value={email}
+          onChange={handleEmailChange}
         />
       </div>
 
       <div className="flex flex-col gap-2 mb-6">
-        <ButtonAzul texto="Enviar enlace" />
+        <LoadingButton 
+          isLoading={isLoading} 
+          text="Enviar enlace" 
+          onClick={sendRecoveryEmail} 
+        />
       </div>
 
       <div className="text-center">
@@ -58,4 +88,4 @@ function ForgotPassword({ isOpen, onReturn, onClose, setActiveView }: ForgotPass
   );
 }
 
-export default ForgotPassword;
+export default ModalForgotPassword;

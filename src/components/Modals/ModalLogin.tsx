@@ -1,14 +1,13 @@
-import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import ButtonAzul from "../Botones/ButtonAzul";
 import InputAzul from "../Inputs/InputAzul";
 
-interface LoginProps {
+interface ModalLoginProps {
   onClose: () => void;
   onSwitchToForgotPassword: () => void; // Nueva prop para cambiar la vista
 }
 
-function Login({ onClose, onSwitchToForgotPassword }: LoginProps) {
+function ModalLogin({ onClose, onSwitchToForgotPassword }: ModalLoginProps) {
   const handleForgotPasswordClick = () => {
     // Llamamos a la función del padre para cambiar la vista
     onSwitchToForgotPassword();
@@ -28,6 +27,8 @@ function Login({ onClose, onSwitchToForgotPassword }: LoginProps) {
           label="Correo electrónico"
           type="email"
           placeholder="tucorreo@ejemplo.com"
+          value=""
+          onChange={() => {}}
         />
       </div>
 
@@ -36,6 +37,8 @@ function Login({ onClose, onSwitchToForgotPassword }: LoginProps) {
           label="Contraseña"
           type="password"
           placeholder="Ingrese la contraseña"
+          value=""
+          onChange={() => {}}
         />
       </div>
 
@@ -68,4 +71,4 @@ function Login({ onClose, onSwitchToForgotPassword }: LoginProps) {
   );
 }
 
-export default Login;
+export default ModalLogin;
