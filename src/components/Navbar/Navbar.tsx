@@ -7,15 +7,13 @@ import ButtonNotificacion from "./ButtonNotificacion";
 function Navbar() {
   return (
     <>
-      <nav className="flex items-center justify-between py-4 px-12 bg-[#F1E0CC]">
+      <nav className="flex items-center justify-between py-4 px-12 bg-white shadow-md">
         <LogoNav />
-        <div className="flex flex-col items-center space-y-4">
-          <Categorias />
-          <Buscador />
-        </div>
+        <Categorias />
+        <Buscador />
         <div className="flex items-center">
           <ButtonNotificacion />
-          <Menu/>
+          <Menu />
         </div>
       </nav>
     </>
