@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 const Footer = () => {
     return (
@@ -23,10 +24,10 @@ const Footer = () => {
                     <div>
                         <h3 className="font-semibold border-b border-gray-400 pb-2 mb-3">Compañía</h3>
                         <ul className="text-sm space-y-1">
-                            <li><a href="#" className="hover:underline">Servicios</a></li>
-                            <li><a href="#" className="hover:underline">Chat</a></li>
-                            <li><a href="#" className="hover:underline">Combos</a></li>
-                            <li><a href="#" className="hover:underline">Sobre nosotros</a></li>
+                            <li><Link to="" className="hover:underline">Servicios</Link></li>
+                            <li><Link to="" className="hover:underline">Chat</Link></li>
+                            <li><Link to="" className="hover:underline">Combos</Link></li>
+                            <li><Link to="" className="hover:underline">Sobre nosotros</Link></li>
                         </ul>
                     </div>
 
@@ -35,8 +36,8 @@ const Footer = () => {
                     <div>
                         <h3 className="font-semibold border-b border-gray-400 pb-2 mb-3">Soporte</h3>
                         <ul className="text-sm space-y-1">
-                            <li><a href="#" className="hover:underline">Términos y condiciones</a></li>
-                            <li><a href="#" className="hover:underline">Privacidad</a></li>
+                            <li><Link to="" className="hover:underline">Términos y condiciones</Link></li>
+                            <li><Link to="" className="hover:underline">Privacidad</Link></li>
                         </ul>
                     </div>
 
@@ -57,18 +58,18 @@ const Footer = () => {
 
                         <h3 className="font-semibold border-b border-gray-400 pb-2 mt-auto mb-3">Síguenos</h3>
                         <div className="flex space-x-4 text-xl justify-between">
-                            <a href="#" className="hover:opacity-80">
+                            <Link to="" className="hover:opacity-80">
                                 <img src="/assets/Footer/icon-facebook.svg" alt="Facebook" className="w-6 h-6" />
-                            </a>
-                            <a href="#" className="hover:opacity-80">
+                            </Link>
+                            <Link to="" className="hover:opacity-80">
                                 <img src="/assets/Footer/icon-instagram.svg" alt="Instagram" className="w-6 h-6" />
-                            </a>
-                            <a href="#" className="hover:opacity-80">
+                            </Link>
+                            <Link to="" className="hover:opacity-80">
                                 <img src="/assets/Footer/icon-x.svg" alt="X" className="w-6 h-6" />
-                            </a>
-                            <a href="#" className="hover:opacity-80">
+                            </Link>
+                            <Link to="" className="hover:opacity-80">
                                 <img src="/assets/Footer/icon-telegram.png" alt="Telegram" className="w-6 h-6" />
-                            </a>
+                            </Link>
                         </div>
 
                     </div>
