@@ -5,13 +5,13 @@ import Cookies from "js-cookie";
 
 const instance = axios.create({
     // Spring Boot backend url
-    // baseURL: "http://localhost:8080/api",
-    baseURL: "https://pokeapi.co/api/v2",
+    baseURL: "http://localhost:8080/api",
+    //baseURL: "https://pokeapi.co/api/v2",
     timeout: 2000, // 2 seconds
-    // headers: {        
-    //     "Content-type": "application/json"
-    // },
-    // withCredentials: true // Asegura que se envíen las cookies
+    headers: {        
+        "Content-type": "application/json"
+    },
+    withCredentials: true // Asegura que se envíen las cookies
 });
 
 // Request interceptor para agregar el token CSRF a las peticiones y el JWT si existe

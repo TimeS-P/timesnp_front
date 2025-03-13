@@ -1,7 +1,7 @@
 import { IoClose } from "react-icons/io5";
 import ButtonAzul from "../Botones/ButtonAzul";
 import InputAzul from "../Inputs/InputAzul";
-import { getPrueba } from "../../lib/api/apiService";
+import { login } from "../../lib/api/apiService";
 
 interface ModalLoginProps {
   onClose: () => void;
@@ -17,7 +17,9 @@ function ModalLogin({ onClose, onSwitchToForgotPassword }: ModalLoginProps) {
   const handleSumbit = async () => {
     console.log("Haciendo login...");
     try {
-      const data = await getPrueba();
+      const email = "usuario@gmail.com";
+      const password = "usuario";
+      const data = await login(email, password);
 
       console.log("Respuesta del login: ", data);
 
