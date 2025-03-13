@@ -2,6 +2,7 @@ import { useState } from "react";
 import Login from "../Modals/ModalLogin";
 import ModalForgotPassword from "../Modals/ModalForgotPassword";
 import ImagenLogin from "./ImagenLogin";
+import api from "../../lib/api/api";
 
 interface ModalLoginProps {
   isOpen: boolean;

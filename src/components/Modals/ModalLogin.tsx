@@ -1,6 +1,7 @@
 import { IoClose } from "react-icons/io5";
 import ButtonAzul from "../Botones/ButtonAzul";
 import InputAzul from "../Inputs/InputAzul";
+import { login } from "../../lib/api/apiService";
 
 interface ModalLoginProps {
   onClose: () => void;
@@ -13,10 +14,24 @@ function ModalLogin({ onClose, onSwitchToForgotPassword }: ModalLoginProps) {
     onSwitchToForgotPassword();
   };
 
+  const handleSumbit = async () => {
+    console.log("Haciendo login...");
+    try {
+      const email = "usuario@gmail.com";
+      const password = "usuario";
+      const data = await login(email, password);
+
+      console.log("Respuesta del login: ", data);
+
+    } catch (error) {
+      console.error("ERROR al hacer post: ", error);
+    }
+  }
+
   return (
     <div className="w-1/2 bg-white p-8 flex flex-col justify-center baloo-2">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-[#162C51]">Iniciar sesión</h2>
+        <h1 className="text-2xl font-bold text-[#162C51]">Iniciar sesión</h1>
         <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
           <IoClose className="h-6 w-6" />
         </button>
@@ -52,7 +67,7 @@ function ModalLogin({ onClose, onSwitchToForgotPassword }: ModalLoginProps) {
       </div>
 
       <div className="flex flex-col gap-2 mb-6">
-        <ButtonAzul texto="Iniciar sesión" />
+        <ButtonAzul onClick={handleSumbit} texto="Iniciar sesión" />
       </div>
 
       <div className="flex items-center mb-6">
