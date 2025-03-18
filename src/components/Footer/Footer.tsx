@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import LogoNav from "../Navbar/LogoNav";
 
 const Footer = () => {
     return (
@@ -8,7 +9,7 @@ const Footer = () => {
                 {/* Logo y descripción */}
                 <div className="flex flex-col h-full pr-6 md:border-r border-gray-400">
                     <h2 className="text-2xl font-bold flex items-center">
-                        <span className="text-black">Time</span>S&P
+                        <LogoNav />
                     </h2>
                     <p className="mt-2 text-sm">
                         En TimeS&P conectamos personas con profesionales de confianza,
