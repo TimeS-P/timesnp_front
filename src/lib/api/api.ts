@@ -1,7 +1,7 @@
 // api.ts
 
 import { AxiosRequestConfig } from "axios";
-import apiFacade from "./apiFacade";
+import apiFacade from "../../services/Login/apiFacade";
 
 const api = {
 

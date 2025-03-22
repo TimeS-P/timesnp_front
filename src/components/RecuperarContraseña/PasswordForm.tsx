@@ -3,7 +3,6 @@ import InputAzul from "../Inputs/InputAzul";
 import ButtonAzul from "../Botones/ButtonAzul";
 import PasswordStrengthMeter from "../Inputs/PasswordStrengthMeterProps";
 import usePasswordForm from '../../hooks/ForgotPassword/usePasswordForm';
-import SubmitButton from '../Botones/SubmitButton';
 
 interface PasswordFormProps {
   token: string;
@@ -50,7 +49,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ token, onSuccess, onError }
       
       <div className="mt-8">
         {isSubmitting ? (
-          <SubmitButton text="Actualizando contraseña" />
+          <ButtonAzul texto="Actualizando contraseña" />
         ) : (
           <ButtonAzul texto="Cambiar contraseña" onClick={handleSubmit}/>
         )}

@@ -12,18 +12,15 @@ const Notification: React.FC<NotificationProps> = ({ show, message, isSuccess, o
   if (!show) return null;
   
   return (
-    <div className={`absolute top-4 right-4 left-4 p-4 rounded-md shadow-md flex justify-between items-center ${
-      isSuccess ? "bg-green-100 text-green-800 border-l-4 border-green-500" : "bg-red-100 text-red-800 border-l-4 border-red-500"
-    }`}>
-      <div className="flex items-center">
-        {isSuccess ? <IoCheckmarkCircle className="h-5 w-5 mr-2" /> : <IoWarning className="h-5 w-5 mr-2" />}
-        <p>{message}</p>
+    <div className="fixed top-4 right-4 z-50 flex items-center gap-3 bg-white p-4 rounded-lg shadow-lg border-l-4 border-solid min-w-[300px]" style={{ borderColor: isSuccess ? '#22c55e' : '#ef4444' }}>
+      <div className="flex-shrink-0">
+        {isSuccess ? <IoCheckmarkCircle size={24} className="text-green-500" /> : <IoWarning size={24} className="text-red-500" />}
       </div>
-      <button
-        onClick={onClose}
-        className="text-gray-600 hover:text-gray-800"
-      >
-        <IoClose className="h-5 w-5" />
+      <div className="flex-grow text-gray-700">
+        {message}
+      </div>
+      <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+        <IoClose size={20} />
       </button>
     </div>
   );
