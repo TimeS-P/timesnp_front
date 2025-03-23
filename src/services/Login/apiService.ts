@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "../../lib/api/api";
 import { jwtDecode } from "jwt-decode";
 import { CustomJWTPayload } from "../../ts/interfaces/global";
 

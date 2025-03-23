@@ -1,6 +1,11 @@
 import { Phone, Mail } from "lucide-react";
 
-function DatosContacto() {
+interface DatosContactoProps {
+  telefono?: string;
+  correo?: string;
+}
+
+function DatosContacto({ telefono, correo }: DatosContactoProps) {
   return (
     <div className="p-6 border-l border-gray-200 w-1/2">
       <h3 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
@@ -12,7 +17,7 @@ function DatosContacto() {
           <div className="flex flex-col">
             <span className="text-gray-600">Número de teléfono</span>
             <span className="text-gray-800 font-semibold">
-              4431261199
+              {telefono}
             </span>
           </div>
         </div>
@@ -21,7 +26,7 @@ function DatosContacto() {
           <div className="flex flex-col">
             <span className="text-gray-600">Correo</span>
             <span className="text-gray-800 font-semibold">
-              alexyanguie5@gmail.com
+              {correo}
             </span>
           </div>
         </div>

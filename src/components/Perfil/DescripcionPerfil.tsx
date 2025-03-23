@@ -1,6 +1,8 @@
-import React from "react";
+interface DescripcionPerfilProps {
+  descripcion?: string;
+}
 
-function DescripcionPerfil() {
+function DescripcionPerfil({ descripcion }: DescripcionPerfilProps) {
   return (
     <div className="w-full max-w-4xl">
       <div className="p-6 border-t border-gray-200">
@@ -8,10 +10,7 @@ function DescripcionPerfil() {
           Descripción
         </h3>
         <p className="text-gray-800 text-justify">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod,
-          nunc vel tincidunt tincidunt, nunc elit consectetur elit, nec
-          ultricies purus nunc vel metus. Nullam nec libero auctor, lobortis
-          turpis eu, luctus purus. Nulla facilisi.
+          {descripcion}
         </p>
       </div>
     </div>

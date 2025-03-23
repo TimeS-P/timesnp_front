@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { FaCheck, FaCopy, FaCheckCircle } from 'react-icons/fa';
 
-function NombrePerfil() {
+interface NombrePerfilProps {
+  nombre?: string;
+  apellidoPaterno?: string;
+  apellidoMaterno?: string;
+  codigoUsuario?: string;
+}
+
+
+function NombrePerfil({ nombre, apellidoPaterno, apellidoMaterno, codigoUsuario }: NombrePerfilProps) {
   const [copied, setCopied] = useState(false);
-  const codigoUsuario = "3413af2";
   
   const copiarCodigo = () => {
-    navigator.clipboard.writeText(codigoUsuario);
+    navigator.clipboard.writeText(codigoUsuario ?? '');
     setCopied(true);
     
     setTimeout(() => {
@@ -17,7 +24,8 @@ function NombrePerfil() {
   return (
     <div className='text-white px-4 space-y-2'>
       
-      <h2 className="text-6xl font-bold">Alicia Cervantes Fernandez</h2>
+      {/* Nombre del usuario separado con el apellidoPaterno y materno*/}
+      <h2 className="text-6xl font-bold">{nombre} {apellidoPaterno} {apellidoMaterno}</h2>
       
       <div className="flex items-center w-full rounded-md text-2xl">
         <span>{codigoUsuario}</span>
