@@ -16,7 +16,7 @@ export const Tarjeta = ({nombre, description, precio}: TarjetaProps) => {
         />
         <h2 className="text-lg font-bold mt-2">{nombre}</h2>
         <p className="text-gray-600">{description}</p>
-        <p className="text-gray-800 font-semibold mt-2">{precio}</p>
+        <p className="text-gray-800 font-semibold mt-2">${precio}</p>
       </div>
     </div>
   )

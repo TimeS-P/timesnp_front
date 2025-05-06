@@ -1,12 +1,66 @@
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { Tarjeta } from "../components/Combos/TarjetaCombos";
+import { useState } from "react";
+import ModalCombo from "../components/Combos/ModalCombo";
 
 const Combos = () => {
+const [isModalOpen, setIsModalOpen] = useState(false);
+const [selectedCombo, setSelectedCombo] = useState(null);
 
   const isCliente = true; // Simulando que el usuario es un cliente. TODO: Cambiar por la lógica real de verificación de roles.
   const onClick = () => {
     console.log("Unirse al combo de proveedor");
   }
+
+  const handleOpenModal = (combo) => {
+    setSelectedCombo(combo);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedCombo(null);
+  };
+
+  const combosData = [
+    {
+      nombre: "Combo básico para el hogar",
+      description: "Incluye cosas para el hogar",
+      precio: "1500",
+      proveedor: "Proveedor 1",
+      foto: "/FondoLogin.png",
+    },
+    {
+      nombre: "Combo básico para el hogar",
+      description: "Incluye cosas para el hogar",
+      precio: "1500",
+      proveedor: "Proveedor 1",
+      foto: "/FondoLogin.png",
+    },
+    {
+      nombre: "Combo básico para el hogar",
+      description: "Incluye cosas para el hogar",
+      precio: "1500",
+      proveedor: "Proveedor 1",
+      foto: "/FondoLogin.png",
+    },
+    {
+      nombre: "Combo básico para el hogar",
+      description: "Incluye cosas para el hogar",
+      precio: "1500",
+      proveedor: "Proveedor 1",
+      foto: "/FondoLogin.png",
+    },
+    {
+      nombre: "Combo básico para el hogar",
+      description: "Incluye cosas para el hogar",
+      precio: "1500",
+      proveedor: "Proveedor 1",
+      foto: "/FondoLogin.png",
+    },
+    // Agregar más combos según sea necesario
+  ];
+
   return (
     <>
         {isCliente ? (
@@ -14,11 +68,22 @@ const Combos = () => {
             <div>
                 <h1 className="font-extrabold text-xl p-5">Combos disponibles</h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5"> 
-                    <Tarjeta nombre={"Combo básico para el hogar"} description={"Incluye cosas para el hogar"} precio={"$1500"}/>  
-                    <Tarjeta nombre={"Combo básico para el hogar"} description={"Incluye cosas para el hogar"} precio={"$1500"}/> 
-                    <Tarjeta nombre={"Combo básico para el hogar"} description={"Incluye cosas para el hogar"} precio={"$1500"}/> 
-                    <Tarjeta nombre={"Combo básico para el hogar"} description={"Incluye cosas para el hogar"} precio={"$1500"}/> 
-                    <Tarjeta nombre={"Combo básico para el hogar"} description={"Incluye cosas para el hogar"} precio={"$1500"}/> 
+                    {combosData.map((combo, index) => (
+                      <div key={index} onClick={() => handleOpenModal(combo)}>
+                        <Tarjeta
+                          nombre={combo.nombre}
+                          description={combo.description}
+                          precio={combo.precio}
+                        />
+                      </div>
+                    ))}
+                    {isModalOpen && selectedCombo && (
+                      <ModalCombo
+                        combo={selectedCombo}
+                        onClose={handleCloseModal}
+                        isCliente={isCliente} // Pasar el estado de isCliente al modal
+                      />
+                    )}
                 </div>
             </div>
         ):(
@@ -32,11 +97,22 @@ const Combos = () => {
                     </button>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5"> 
-                    <Tarjeta nombre={"Combo básico para el hogar"} description={"Incluye cosas para el hogar"} precio={"$1500"}/>  
-                    <Tarjeta nombre={"Combo básico para el hogar"} description={"Incluye cosas para el hogar"} precio={"$1500"}/> 
-                    <Tarjeta nombre={"Combo básico para el hogar"} description={"Incluye cosas para el hogar"} precio={"$1500"}/> 
-                    <Tarjeta nombre={"Combo básico para el hogar"} description={"Incluye cosas para el hogar"} precio={"$1500"}/> 
-                    <Tarjeta nombre={"Combo básico para el hogar"} description={"Incluye cosas para el hogar"} precio={"$1500"}/> 
+                    {combosData.map((combo, index) => (
+                      <div key={index} onClick={() => handleOpenModal(combo)}>
+                        <Tarjeta
+                          nombre={combo.nombre}
+                          description={combo.description}
+                          precio={combo.precio}
+                        />
+                      </div>
+                    ))}
+                    {isModalOpen && selectedCombo && (
+                      <ModalCombo
+                        combo={selectedCombo}
+                        onClose={handleCloseModal}
+                        isCliente={isCliente} // Pasar el estado de isCliente al modal
+                      />
+                    )}
                 </div>
             </div>
         )}
