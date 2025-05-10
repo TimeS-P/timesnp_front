@@ -1,18 +1,62 @@
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { Tarjeta } from "../components/Combos/TarjetaCombos";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalCombo from "../components/Combos/ModalCombo";
+import { getCombos, ComboInfo, getRoles } from "../services/Combos/apiCombos";
 
 const Combos = () => {
 const [isModalOpen, setIsModalOpen] = useState(false);
-const [selectedCombo, setSelectedCombo] = useState(null);
+const [isCliente, setIsCliente] = useState(true); // Simulando que el usuario es un cliente. TODO: Cambiar por la lógica real de verificación de roles.
+const [combos, setCombos] = useState<Array<{
+  nombre: string;
+  description: string;
+  precio: string;
+  proveedor: string;
+  foto: string;
+}>>([]);
+const [selectedCombo, setSelectedCombo] = useState<{
+  nombre: string;
+  description: string;
+  precio: string;
+  proveedor: string;
+  foto: string;
+} | null>(null);
 
-  const isCliente = true; // Simulando que el usuario es un cliente. TODO: Cambiar por la lógica real de verificación de roles.
+  const initializateData = async () => {
+    const response = await getCombos();
+    const combosArray: ComboInfo[] = Array.isArray(response) ? response : [response];
+    console.log("Combos: ", combosArray);
+    setCombos(combosArray.map(combo => ({
+      nombre: combo.servicioGeneral.nombre,
+      description: combo.servicioGeneral.descripcion,
+      precio: combo.servicioGeneral.precio,
+      proveedor: combo.proveedor.perfil.nombre,
+      foto: combo.servicioGeneral.fotos[0] || "/FondoLogin.png", // Asignar una foto por defecto si no hay
+    })));
+    
+  };
+
+  const setRoles = async () => {
+    const response = await getRoles();
+    if(response.length > 0){
+      if(response.some((role) => role.nombre === "ROLE_PROVEEDOR")){
+        console.log("El usuario es proveedor");
+        setIsCliente(false);
+      }
+    }
+    console.log("Roles: ", response);
+  }
+
+  useEffect(() => {
+    initializateData();
+    setRoles();
+  },[])
+
   const onClick = () => {
     console.log("Unirse al combo de proveedor");
   }
 
-  const handleOpenModal = (combo) => {
+  const handleOpenModal = (combo: { nombre: string; description: string; precio: string; proveedor: string; foto: string }) => {
     setSelectedCombo(combo);
     setIsModalOpen(true);
   };
@@ -22,44 +66,7 @@ const [selectedCombo, setSelectedCombo] = useState(null);
     setSelectedCombo(null);
   };
 
-  const combosData = [
-    {
-      nombre: "Combo básico para el hogar",
-      description: "Incluye cosas para el hogar",
-      precio: "1500",
-      proveedor: "Proveedor 1",
-      foto: "/FondoLogin.png",
-    },
-    {
-      nombre: "Combo básico para el hogar",
-      description: "Incluye cosas para el hogar",
-      precio: "1500",
-      proveedor: "Proveedor 1",
-      foto: "/FondoLogin.png",
-    },
-    {
-      nombre: "Combo básico para el hogar",
-      description: "Incluye cosas para el hogar",
-      precio: "1500",
-      proveedor: "Proveedor 1",
-      foto: "/FondoLogin.png",
-    },
-    {
-      nombre: "Combo básico para el hogar",
-      description: "Incluye cosas para el hogar",
-      precio: "1500",
-      proveedor: "Proveedor 1",
-      foto: "/FondoLogin.png",
-    },
-    {
-      nombre: "Combo básico para el hogar",
-      description: "Incluye cosas para el hogar",
-      precio: "1500",
-      proveedor: "Proveedor 1",
-      foto: "/FondoLogin.png",
-    },
-    // Agregar más combos según sea necesario
-  ];
+  
 
   return (
     <>
@@ -68,7 +75,7 @@ const [selectedCombo, setSelectedCombo] = useState(null);
             <div>
                 <h1 className="font-extrabold text-xl p-5">Combos disponibles</h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5"> 
-                    {combosData.map((combo, index) => (
+                    {combos.map((combo, index) => (
                       <div key={index} onClick={() => handleOpenModal(combo)}>
                         <Tarjeta
                           nombre={combo.nombre}
@@ -97,7 +104,7 @@ const [selectedCombo, setSelectedCombo] = useState(null);
                     </button>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5"> 
-                    {combosData.map((combo, index) => (
+                    {combos.map((combo, index) => (
                       <div key={index} onClick={() => handleOpenModal(combo)}>
                         <Tarjeta
                           nombre={combo.nombre}
