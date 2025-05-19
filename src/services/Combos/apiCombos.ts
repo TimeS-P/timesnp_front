@@ -6,6 +6,12 @@ interface ComboInfoResponse {
   OK: boolean;
 }
 
+interface ComboCreateResponse {
+  message: string;
+  data: string;
+  OK: boolean;
+}
+
 interface RoleResponse{
     message: string;
     data: Roles[];
@@ -77,6 +83,27 @@ export const getCombos = async (): Promise<ComboInfo> => {
   }
 };
 
+export const deleteCombo = async (comboId: string): Promise<ComboCreateResponse> => {
+  try {
+    const response = await api.delete<ComboCreateResponse>(`http://localhost:8080/api/combo/delete-combo/${comboId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting combo: ", error);
+    throw error;
+  }
+}
+
+export const getComboProveedor = async (): Promise<ComboInfo> => {
+  try {
+    const response = await api.get<ComboInfoResponse>(`http://localhost:8080/api/combo/get-combos-by-proveedor`);
+    console.log("RESPONSE: ",response.data.data);
+    return response.data.data;
+  } catch (error) { 
+    console.error("Error fetching user info: ", error);
+    throw error;
+  }
+};
+
 export const getRoles = async (): Promise<Roles[]> => {
     try {
         const response = await api.get<RoleResponse>("http://localhost:8080/api/combo/get-roles");
@@ -87,3 +114,18 @@ export const getRoles = async (): Promise<Roles[]> => {
     }
 
 }
+
+export const createCombo = async (comboData: FormData): Promise<ComboCreateResponse> => {
+  try {
+    comboData.append('_csrf', sessionStorage.getItem('XSRF-TOKEN') || '');
+    const response = await api.post<ComboCreateResponse>("http://localhost:8080/api/combo/create-combo", comboData,{
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error creating combo: ", error);
+    throw error;
+  }
+};

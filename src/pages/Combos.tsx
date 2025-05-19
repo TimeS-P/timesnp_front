@@ -1,7 +1,7 @@
 import { Tarjeta } from "../components/Combos/TarjetaCombos";
 import { useEffect, useState } from "react";
 import ModalCombo from "../components/Combos/ModalCombo";
-import { getCombos, ComboInfo, getRoles } from "../services/Combos/apiCombos";
+import { getCombos, ComboInfo, getRoles, getComboProveedor } from "../services/Combos/apiCombos";
 import ToggleUserTypeButton from "../components/Combos/ToggleProveedorButton";
 import ComboForm from "../components/Combos/ModalCrearCombo";
 
@@ -10,18 +10,32 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 const [isCliente, setIsCliente] = useState(true); // Simulando que el usuario es un cliente. TODO: Cambiar por la lógica real de verificación de roles.
 const [isProveedor, setIsProveedor] = useState(false);
 const [combos, setCombos] = useState<Array<{
+  id: string;
   nombre: string;
   description: string;
   precio: string;
   proveedor: string;
   foto: string;
+  idServicioGeneral: string;
 }>>([]);
-const [selectedCombo, setSelectedCombo] = useState<{
+const [combosProveedor, setCombosProveedor] = useState<Array<{
+  id:string;
   nombre: string;
   description: string;
   precio: string;
   proveedor: string;
   foto: string;
+  idServicioGeneral: string;
+}>>([]);
+
+const [selectedCombo, setSelectedCombo] = useState<{
+  id:string;
+  nombre: string;
+  description: string;
+  precio: string;
+  proveedor: string;
+  foto: string;
+  idServicioGeneral: string;
 } | null>(null);
 
   const initializateData = async () => {
@@ -29,11 +43,29 @@ const [selectedCombo, setSelectedCombo] = useState<{
     const combosArray: ComboInfo[] = Array.isArray(response) ? response : [response];
     console.log("Combos: ", combosArray);
     setCombos(combosArray.map(combo => ({
+      id: combo.id,
       nombre: combo.servicioGeneral.nombre,
       description: combo.servicioGeneral.descripcion,
       precio: combo.servicioGeneral.precio,
       proveedor: combo.proveedor.perfil.nombre,
-      foto: combo.servicioGeneral.fotos[0] || "/FondoLogin.png", // Asignar una foto por defecto si no hay
+      foto: combo.servicioGeneral.fotos[0] ? combo.servicioGeneral.fotos[0].url_foto : "/FondoLogin.png", // Asignar una foto por defecto si no hay
+      idServicioGeneral: combo.servicioGeneral.id
+    })));
+    
+  };
+
+  const initializateDataProveedor = async () => {
+    const response = await getComboProveedor();
+    const combosArray: ComboInfo[] = Array.isArray(response) ? response : [response];
+    console.log("Combos-proveedor: ", combosArray);
+    setCombosProveedor(combosArray.map(combo => ({
+      id: combo.id,
+      nombre: combo.servicioGeneral.nombre,
+      description: combo.servicioGeneral.descripcion,
+      precio: combo.servicioGeneral.precio,
+      proveedor: combo.proveedor.perfil.nombre,
+      foto: combo.servicioGeneral.fotos[0] ? combo.servicioGeneral.fotos[0].url_foto : "/FondoLogin.png", // Asignar una foto por defecto si no hay
+      idServicioGeneral: combo.servicioGeneral.id
     })));
     
   };
@@ -52,10 +84,11 @@ const [selectedCombo, setSelectedCombo] = useState<{
   useEffect(() => {
     initializateData();
     setRoles();
+    initializateDataProveedor();
   },[])
 
 
-  const handleOpenModal = (combo: { nombre: string; description: string; precio: string; proveedor: string; foto: string }) => {
+  const handleOpenModal = (combo: {id:string; nombre: string; description: string; precio: string; proveedor: string; foto: string ; idServicioGeneral: string }) => {
     setSelectedCombo(combo);
     setIsModalOpen(true);
   };
@@ -73,7 +106,7 @@ const [selectedCombo, setSelectedCombo] = useState<{
             // Si el usuario es cliente, muestra la sección de Combos de clientes
             <div>
               <div className="flex justify-between items-center">
-                <h1 className="font-extrabold text-xl p-5">Combos disponibles</h1>
+                <h1 className="font-extrabold text-xl p-5 pl-8">Combos disponibles</h1>
                 {isProveedor && (<ToggleUserTypeButton isCliente={setIsCliente}/>)}
               </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5"> 
@@ -83,6 +116,7 @@ const [selectedCombo, setSelectedCombo] = useState<{
                           nombre={combo.nombre}
                           description={combo.description}
                           precio={combo.precio}
+                          foto={combo.foto}
                         />
                       </div>
                     ))}
@@ -99,7 +133,7 @@ const [selectedCombo, setSelectedCombo] = useState<{
             // Si el usuario es proveedor, muestra la sección de Acceso de proveedores
             <div>
               <div className="flex justify-between items-center">
-                  <h1 className="font-extrabold text-xl p-5">Combos de otros proveedores a los que puedes unirte</h1>
+                  <h1 className="font-extrabold text-xl p-5 pl-8">Tus combos</h1>
                   {isProveedor && (<ToggleUserTypeButton isCliente={setIsCliente}/>)}
               </div>
                 <div className="w-40 ml-5">
@@ -107,12 +141,13 @@ const [selectedCombo, setSelectedCombo] = useState<{
                     
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5"> 
-                    {combos.map((combo, index) => (
+                    {combosProveedor.map((combo, index) => (
                       <div key={index} onClick={() => handleOpenModal(combo)}>
                         <Tarjeta
                           nombre={combo.nombre}
                           description={combo.description}
                           precio={combo.precio}
+                          foto={combo.foto}
                         />
                       </div>
                     ))}
