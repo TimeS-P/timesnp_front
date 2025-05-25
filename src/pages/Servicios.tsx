@@ -63,7 +63,7 @@ function Servicios() {
   const [categories, setCategories] = useState<CategoriaInfo[]>([]);
   const [services, setServices] = useState<ServicioInfo[]>([]); // Cambia 'any' por el tipo adecuado para tus servicios
   const [selectedCategory, setSelectedCategory] = useState(
-    "550e8400-e29b-41d4-a716-446655440001"
+    "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaf"
   );
   const [filter, setFilter] = useState<string>("CALIF");
 
@@ -92,7 +92,7 @@ function Servicios() {
 
   // Aquí puedes obtener los servicios por categoría
   useEffect(() => {
-    fetchServicesByCategory("550e8400-e29b-41d4-a716-446655440000");
+    fetchServicesByCategory("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaf");
   }, []);
 
   const handleFilterChange = (newFilter: string) => {
@@ -122,12 +122,14 @@ function Servicios() {
         {services.map((service) => (
           <TarjetaServicio
             key={service.id}
+            id={service.id}
             nombreServicio={service.nombre}
             nombreProveedor={
               service.idProveedorHasServicio.proveedor.perfil.nombre
             }
             calificacion={service.idProveedorHasServicio.calificacion}
             tipoPrecio={service.idProveedorHasServicio.tipoPrecio.unidad_medida}
+            precio={service.precio}
             descripcion={service.descripcion}
             ubicacion="Ubicación del proveedor" // Cambia esto según tu lógica
             disponibilidad="Lunes a Viernes" // Cambia esto según tu lógica

@@ -44,9 +44,9 @@ const Filtrador: React.FC<FiltradorProps> = ({ onFilterChange }) => {
   // Texto para mostrar en el botón según el filtro seleccionado
   const getButtonText = () => {
     switch (selectedFilter) {
-      case "PRECIO_ASC":
-        return "Precio: Menor a mayor";
       case "PRECIO_DESC":
+        return "Precio: Menor a mayor";
+      case "PRECIO_ASC":
         return "Precio: Mayor a menor";
       case "CALIF":
         return "Calificación: Mejor a peor";
@@ -87,14 +87,14 @@ const Filtrador: React.FC<FiltradorProps> = ({ onFilterChange }) => {
               onClick={() => handleFilterClick("PRECIO_ASC")}
             >
               <DollarSign className="w-4 h-4 mr-2" />
-              <span>Menor a mayor</span>
+              <span>Mayor a menor</span>
             </div>
             <div
               className={getItemClasses("PRECIO_DESC")}
               onClick={() => handleFilterClick("PRECIO_DESC")}
             >
               <DollarSign className="w-4 h-4 mr-2" />
-              <span>Mayor a menor</span>
+              <span>Menor a mayor</span>
             </div>
 
             {/* Categoría Alfabético */}

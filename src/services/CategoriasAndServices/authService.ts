@@ -112,3 +112,22 @@ export const getServiciosPorCategoria = async (
     throw error;
   }
 };
+
+export const getServicioPorId = async (
+  id: string
+): Promise<any[]> => {
+  try {
+    const response = await api.get<ServicioResponse>(
+      `/servicios/servicio`,
+      {
+        params: {
+          id
+        }
+      }
+    );
+    return response.data.data; // Accedemos a data.data para obtener el servicio
+  } catch (error) {
+    console.error("Error fetching service by ID: ", error);
+    throw error;
+  }
+}
