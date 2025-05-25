@@ -4,11 +4,13 @@ import ModalCombo from "../components/Combos/ModalCombo";
 import { getCombos, ComboInfo, getRoles, getComboProveedor } from "../services/Combos/apiCombos";
 import ToggleUserTypeButton from "../components/Combos/ToggleProveedorButton";
 import ComboForm from "../components/Combos/ModalCrearCombo";
+import { getUserId } from "../services/Chat/chatService";
 
 const Combos = () => {
 const [isModalOpen, setIsModalOpen] = useState(false);
 const [isCliente, setIsCliente] = useState(true); // Simulando que el usuario es un cliente. TODO: Cambiar por la lógica real de verificación de roles.
 const [isProveedor, setIsProveedor] = useState(false);
+const [userId, setUserId] = useState<string>("");
 const [combos, setCombos] = useState<Array<{
   id: string;
   nombre: string;
@@ -54,6 +56,16 @@ const [selectedCombo, setSelectedCombo] = useState<{
     
   };
 
+  const getUser = async () => {
+    try {
+        const response = await getUserId();
+        console.log("UserId: ", response);
+        setUserId(response.data);
+    } catch (error) {
+        console.error("Error al obtener el ID del usuario: ", error);
+    }
+  }
+
   const initializateDataProveedor = async () => {
     const response = await getComboProveedor();
     const combosArray: ComboInfo[] = Array.isArray(response) ? response : [response];
@@ -85,6 +97,7 @@ const [selectedCombo, setSelectedCombo] = useState<{
     initializateData();
     setRoles();
     initializateDataProveedor();
+    getUser();
   },[])
 
 
@@ -125,6 +138,7 @@ const [selectedCombo, setSelectedCombo] = useState<{
                         combo={selectedCombo}
                         onClose={handleCloseModal}
                         isCliente={isCliente} // Pasar el estado de isCliente al modal
+                        userId={userId} // Pasar el userId al modal
                       />
                     )}
                 </div>

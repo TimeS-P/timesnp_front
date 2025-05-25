@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { connectToChat, sendMessage, disconnect, ChatMessage } from '../../services/Chat/chatService';
+import { useState, useEffect, use } from 'react';
+import { connectToChat, sendMessage, disconnect, ChatMessage, getMessagesFromChatId } from '../../services/Chat/chatService';
 
 interface ChatModalProps {
   chatId: string;
@@ -7,16 +7,66 @@ interface ChatModalProps {
   isOpen: boolean;
   onClose: () => void;
   nombreServicio?: string;
-  idChat: string;
+  chat: ChatResponse;
 }
 
-const ChatModal = ({ idChat, userId, isOpen, onClose, nombreServicio = 'Chat' }: ChatModalProps) => {
+export interface User{
+    data:string;
+}
+
+export interface ChatResponse {
+    data: {
+
+        id:string;
+        servicioGeneral: {
+                id: string;
+                nombre: string;
+                descripcion: string;
+                precio: number;
+                tipoServicio: string;
+                proveedorHasServicio?: string | null; // Cambiado a optional
+                contrataciones?: string[]; // Cambiado a optional
+                fotos?: string[]; // Cambiado a optional
+                reportes?: string[]; // Cambiado a optional
+                mensajes?: ChatMessage[]; // Cambiado a optional
+            };
+    }
+
+    
+}
+
+const ChatModal = ({ chat, userId, isOpen, onClose, nombreServicio = 'Chat' }: ChatModalProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
 
   useEffect(() => {
+    console.log("messages: ", messages);
+    console.log("UserId: ", userId);
+  },[messages])
+
+  const getMessages = async () => {
+    try {
+      console.log("Chat: ", chat);
+      const response = await getMessagesFromChatId(chat.data.id);
+      if (response.OK) {
+        const messages = response.data.map((msg: any) => ({
+          emisor: msg.emisor.id,
+          mensaje: msg.mensaje,
+          fecha: msg.fecha,
+          chatId: chat.data.id,
+        }));
+        setMessages(messages);
+      }
+      console.log('Messages fetched:', response);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  }
+
+  useEffect(() => {
     if (isOpen) {
-      connectToChat(idChat, (message: ChatMessage) => {
+      getMessages();
+      connectToChat(chat.data.id, (message: ChatMessage) => {
         setMessages((prev) => [...prev, message]);
       });
     }
@@ -25,17 +75,20 @@ const ChatModal = ({ idChat, userId, isOpen, onClose, nombreServicio = 'Chat' }:
         disconnect();
       }
     };
-  }, [idChat, isOpen]);
+  }, [chat, isOpen]);
+
 
   const handleSend = (): void => {
     if (newMessage.trim() === '') return;
-    
+    console.log("Emisor: ", userId);
     const message: ChatMessage = {
       emisor: userId,
       mensaje: newMessage,
       fecha: new Date().toISOString(),
+      chatId: chat.data.id,
     };
-    sendMessage(idChat, message);
+    console.log('Sending message:', message);
+    sendMessage(chat.data.id, message);
     setNewMessage('');
   };
 

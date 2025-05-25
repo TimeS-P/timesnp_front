@@ -6,7 +6,7 @@ import { deleteCombo } from '../../services/Combos/apiCombos';
 import Notification from '../Notificaciones/Notificacion';
 import { IoIosChatboxes } from 'react-icons/io';
 import ChatModal from './Chat';
-import { createChat } from '../../services/Chat/chatService';
+import { ChatResponse, createChat } from '../../services/Chat/chatService';
 
 interface ComboDetails {
   id: string;
@@ -22,13 +22,33 @@ interface ModalDetalleComboProps {
   combo: ComboDetails;
   onClose: () => void;
   isCliente: boolean;
+  userId: string;
 }
 
-const ModalCombo: React.FC<ModalDetalleComboProps> = ({ combo, onClose, isCliente }) => {
+
+const ModalCombo: React.FC<ModalDetalleComboProps> = ({ combo, onClose, isCliente, userId }) => {
 
   const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [activeChat, setActiveChat] = useState<string>("");
+  const [activeChat, setActiveChat] = useState<ChatResponse>(
+    {
+      data: {
+        id: "",
+        servicioGeneral: {
+          id: "",
+          nombre: "",
+          descripcion: "",
+          precio: 0,
+          tipoServicio: "",
+          proveedorHasServicio: null,
+          contrataciones: [],
+          fotos: [],
+          reportes: [],
+          mensajes: []
+        }
+      }
+    }
+  );
   const [notification, setNotification] = useState({
         show: false,
         message: "",
@@ -39,13 +59,14 @@ const ModalCombo: React.FC<ModalDetalleComboProps> = ({ combo, onClose, isClient
       try {
         const response = await createChat(combo.idServicioGeneral);
         console.log("Chat creado: ", response);
-        setActiveChat(response.id);
+        setActiveChat(response);
       } catch (error) {
         console.error("Error al crear el chat: ", error);
       }
     }
 
     const openChat = () => {
+      console.log("UserId: "+userId)
       setChat();
       setIsChatOpen(true);
       
@@ -124,10 +145,10 @@ const ModalCombo: React.FC<ModalDetalleComboProps> = ({ combo, onClose, isClient
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <ChatModal
         chatId={"ChatId"}
-        userId={"userId"}
+        userId={userId}
         isOpen={isChatOpen}
         onClose={closeChat}
-        idChat={activeChat}
+        chat={activeChat}
         nombreServicio={"nombreServicio"}
       />
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
@@ -189,16 +210,6 @@ const ModalCombo: React.FC<ModalDetalleComboProps> = ({ combo, onClose, isClient
                 :
                 (
                  <div className='flex gap-2'>
-                   <button
-                     onClick={() => {
-                       // Aquí puedes agregar la lógica para unirte al combo
-                       console.log(`Unido al combo: ${combo.nombre}`);
-                       onClose();
-                     }}
-                     className='transition duration-300 ease-in-out hover:scale-110'
-                   >
-                      <FaEdit className="text-blue-500 w-8 h-8" />
-                   </button>
                    <button
                      
                      onClick={() => {
