@@ -1,6 +1,9 @@
-import React from 'react'
+import { CustomJWTPayload } from '../../ts/interfaces/global';
+import { jwtDecode } from "jwt-decode";
 
-function FotoPerfil({ verificado = false }) {
+function FotoPerfil() {
+  const decodedToken: CustomJWTPayload = jwtDecode<CustomJWTPayload>(sessionStorage.getItem("JWT-TOKEN") || ""); // Verifica si el usuario está verificado
+
   return (
     <div>
       <div className="w-96 bg-white shadow-lg shadow-black rounded-tr-3xl rounded-bl-3xl overflow-hidden flex flex-col">
@@ -15,7 +18,7 @@ function FotoPerfil({ verificado = false }) {
         
         {/* Sección de verificación/proveedor */}
         <div className="pt-8 flex flex-col items-center justify-center">
-          {!verificado ? (
+          {!decodedToken.isVerified ? (
             <>
               <h3 className="text-xl font-semibold text-gray-800 mb-4">
                 Verificación pendiente

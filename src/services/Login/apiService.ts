@@ -5,16 +5,11 @@ import { CustomJWTPayload } from "../../ts/interfaces/global";
 // Prueba
 export const login = async (email:string , password:string) : Promise<any> => {
 
-    // Agregamos el email y password al header Authorization en base 64
-    // Genera la credencial en formato Basic Auth
-    const auth = `Basic ${btoa(`${email}:${password}`)}`;
-
-    // Hace la petición con el header Authorization
-    const response = await api.get<any>("/auth/login", {
-        headers: {
-            Authorization: auth, // Agrega el header Authorization con las credenciales en base 64
-        },
-    });
+    // Hace la petición enviando el email y password en el body
+    const response = await api.post<any>("/auth/loginSecure", {
+        email,
+        password, // Enviamos las credenciales en el body
+      });
 
     //console.log("Authorization HEADER on response: ", response.headers["authorization"]);
 

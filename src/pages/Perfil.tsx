@@ -7,8 +7,6 @@ import DescripcionPerfil from "../components/Perfil/DescripcionPerfil";
 import ButtonAzul from "../components/Botones/ButtonAzul";
 import ModalEditarPerfil from "../components/Perfil/ModalEditarPerfil";
 import { getUserInfo } from "../services/Perfil/authService";
-import { CustomJWTPayload } from "../ts/interfaces/global";
-import { jwtDecode } from "jwt-decode";
 
 interface UserInfo {
   nombre: string;
@@ -41,6 +39,7 @@ function Perfil() {
         const data = await getUserInfo();
         setUserInfo(data);
         setError("");
+        
 
         // Verifica si hay datos incompletos y abre el modal automáticamente
         if (datosIncompletos(data)) {
