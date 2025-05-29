@@ -7,7 +7,7 @@ const instance = axios.create({
     // Spring Boot backend url
     baseURL: "http://localhost:8080/api",
     //baseURL: "https://pokeapi.co/api/v2",
-    timeout: 5000, // 2 seconds
+    timeout: 10000, // 2 seconds
     headers: {        
         "Content-type": "application/json"
     },

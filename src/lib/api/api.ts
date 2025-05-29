@@ -13,6 +13,13 @@ const api = {
         return await apiFacade.post<T>(url, data, config);
     },
 
+    put: async <T>(url: string, data: any, config?: AxiosRequestConfig) => {
+        return await apiFacade.put<T>(url, data, config);
+    },
+    delete: async <T>(url: string, config?: AxiosRequestConfig) => {
+        return await apiFacade.delete<T>(url, config);
+    }
+
 }
 
 export default api;

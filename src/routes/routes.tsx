@@ -5,6 +5,8 @@ import Perfil from "../pages/Perfil";
 import Servicios from "../pages/Servicios";
 import ServicioCompleto from "../components/Servicios/ServicioCompleto/ServicioCompleto";
 import GetServicioCompleto from "../pages/GetServicioCompleto";
+import Combos from "../pages/Combos";
+import Chat from "../pages/Chat";
 
 const AppRoutes = () => {
   return (
@@ -14,6 +16,8 @@ const AppRoutes = () => {
       <Route path="/forgot_password" element={<RecuperarContrasena />} />
       <Route path="/perfil" element={<Perfil />} />
       <Route path="/servicios/:id" element={<GetServicioCompleto />} />
+      <Route path="/combos" element={<Combos/>} />
+      <Route path="/chat" element={<Chat/>} />
     </Routes>
   );
 };
