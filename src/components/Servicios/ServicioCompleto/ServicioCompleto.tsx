@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Star, MapPin, Calendar, User, Heart } from "lucide-react";
 import ReviewsSection from "./ReviewsSection";
 import PhotoGallery from "./PhotoGalley";
+import ContratacionPopup from "../../Contratacion/ContratacionPopup";
 import { useParams } from "react-router-dom";
 
 interface Domicilio {
@@ -20,7 +21,7 @@ interface ProveedorInfo {
   apellidoMaterno: string;
   foto: string;
   domicilio: Domicilio;
-  direccion?: string; // Added to match usage in the component
+  direccion?: string;
 }
 
 interface ServicioCompletoProps {
@@ -37,13 +38,14 @@ interface ServicioCompletoProps {
     tipoPrecio: string;
     includes: string[];
     gallery: string[];
-    reviewsData: any[]; // You can replace 'any' with a more specific type if available
+    reviewsData: any[];
     proveedorInfo: ProveedorInfo;
   };
 }
 
 const ServicioCompleto: React.FC<ServicioCompletoProps> = ({ serviceData }) => {
   const [activeTab, setActiveTab] = useState("description");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   // Datos del perfil - usar datos reales o valores por defecto
   const profile = serviceData || {
@@ -58,7 +60,7 @@ const ServicioCompleto: React.FC<ServicioCompletoProps> = ({ serviceData }) => {
     description:
       "Resalta tu belleza con un maquillaje diseñado especialmente para ti. Ya sea para una boda, graduación, sesión de fotos o cualquier evento especial, ofrecemos un servicio personalizado que se adapta a tu estilo y realza tus mejores rasgos.",
     serviceTitle: "Maquillaje profesional",
-    tipoPrecio: "Por servicio",
+    tipoPrecio: "servicio" as const,
     includes: [
       "Asesoría personalizada para elegir el look ideal.",
       "Productos de alta calidad para una piel impecable y de larga duración.",
@@ -72,17 +74,44 @@ const ServicioCompleto: React.FC<ServicioCompletoProps> = ({ serviceData }) => {
       "https://images.unsplash.com/photo-1571844307880-751c6d86f3f3?w=300&h=300&fit=crop",
       "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=300&fit=crop",
     ],
-    // Datos de docmicilio
-    // Puedes agregar más datos aquí según sea necesario
-    // Por ejemplo, si tienes un objeto de domicilio, puedes agregarlo aquí
     proveedorInfo: {
-      email: "",
-      telefono: "",
-      direccion: "",
-      verificado: false,
-      puntos: 0,
+      id: "1",
+      nombre: "Amalia",
+      apellidoPaterno: "Rosas",
+      apellidoMaterno: "González",
+      foto: "https://images.unsplash.com/photo-1494790108755-2616c619e39e?w=100&h=100&fit=crop&crop=face",
+      domicilio: {
+        calle: "Av. Principal",
+        numero: "123",
+        colonia: "Centro",
+        ciudad: "Morelia",
+        estado: "Michoacán",
+        pais: "México"
+      },
+      direccion: "Morelia, Michoacán, México"
     },
     reviewsData: [],
+  };
+
+  // Preparar datos para el popup de contratación
+  const contratacionData = {
+    nombre: profile.name,
+    rating: profile.rating,
+    reviews: profile.reviews,
+    price: profile.price,
+    tipoPrecio: profile.tipoPrecio,
+    serviceTitle: profile.serviceTitle,
+    availability: profile.availability,
+    avatar: profile.avatar,
+    ubicacion: profile.proveedorInfo.direccion || "Ubicación no disponible"
+  };
+
+  const handleContratarClick = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
   };
 
   return (
@@ -109,7 +138,7 @@ const ServicioCompleto: React.FC<ServicioCompletoProps> = ({ serviceData }) => {
 
             <div className="flex items-center gap-4 text-gray-600">
               <span className="font-semibold text-lg">
-                ${profile.price} {profile.tipoPrecio}
+                ${profile.price} {profile.tipoPrecio === 'servicio' ? 'Por servicio' : profile.tipoPrecio === 'Por hora' ? 'por hora' : profile.tipoPrecio === 'Por diía' ? 'por día' : profile.tipoPrecio == 'Por semana' ? 'por semana' : profile.tipoPrecio === 'Por mes' ? 'por mes' : profile.tipoPrecio === 'Por metro cuadrado' ? 'por metro cuadrado' : profile.tipoPrecio }
               </span>
               <span className="text-gray-400">|</span>
               <span>{profile.category}</span>
@@ -120,7 +149,7 @@ const ServicioCompleto: React.FC<ServicioCompletoProps> = ({ serviceData }) => {
               </div>
             </div>
 
-            {/* Pais, ciudad */}
+            {/* País, ciudad */}
             <div className="flex items-center gap-4 mt-3">
               <MapPin className="w-5 h-5 text-gray-500" />
               <span className="text-gray-600">
@@ -141,7 +170,10 @@ const ServicioCompleto: React.FC<ServicioCompletoProps> = ({ serviceData }) => {
                 <h3 className="font-semibold">{profile.name}</h3>
               </div>
             </div>
-            <button className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors">
+            <button 
+              onClick={handleContratarClick}
+              className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors"
+            >
               Contratar
             </button>
           </div>
@@ -189,6 +221,13 @@ const ServicioCompleto: React.FC<ServicioCompletoProps> = ({ serviceData }) => {
           <PhotoGallery images={profile.gallery} />
         )}
       </div>
+
+      {/* Popup de Contratación */}
+      <ContratacionPopup
+        isOpen={isPopupOpen}
+        onClose={handleClosePopup}
+        data={contratacionData}
+      />
     </div>
   );
 };
