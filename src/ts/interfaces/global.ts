@@ -6,4 +6,5 @@ export interface CustomJWTPayload extends JwtPayload {
     accountNonLocked: boolean;
     iat: number; // Tiempo en el que se emitió el token en
     exp: number; // Expiración del token en timestamp
+    isVerified: boolean; // Verifica si el usuario está verificado
 }
