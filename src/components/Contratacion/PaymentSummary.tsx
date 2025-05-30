@@ -12,9 +12,11 @@ const PaymentSummary: React.FC<PaymentSummaryProps> = ({
   paymentData,
   onPaymentChange,
 }) => {
+
   const handleUsePointsChange = (usePoints: boolean) => {
     onPaymentChange({ ...paymentData, usePoints });
   };
+
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-4">

@@ -15,12 +15,17 @@ import ReferralCode from "./ReferralCode";
 import PaymentSummary from "./PaymentSummary";
 import TermsAndConditions from "./TermsAndConditions";
 import PaymentButtons from "./PaymentButtons";
+import { CustomJWTPayload } from "../../ts/interfaces/global";
+import { jwtDecode } from "jwt-decode";
+
 
 const ContratacionPopup: React.FC<ContratacionPopupProps> = ({
   isOpen,
   onClose,
   data,
 }) => {
+  const jwtToken = sessionStorage.getItem("JWT-TOKEN");
+  const decodedToken: CustomJWTPayload = jwtDecode<CustomJWTPayload>(jwtToken || "");
   // Estados para cada sección
   const [serviceConfig, setServiceConfig] = useState<ServiceConfigData>({
     selectedDate: "",
@@ -41,7 +46,7 @@ const ContratacionPopup: React.FC<ContratacionPopupProps> = ({
     basePrice: data.price,
     pointsDiscount: 0,
     totalPrice: data.price,
-    availablePoints: 250,
+    availablePoints: decodedToken.puntos, // Asumiendo que el JWT contiene los puntos del usuario
     pointsValue: 0.5,
   });
 
