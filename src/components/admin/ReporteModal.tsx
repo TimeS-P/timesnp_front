@@ -1,4 +1,5 @@
-import { Reporte } from "./AdminSidebar";
+import { Reporte } from "../../services/CategoriasAndServices/authService";
+import {  } from "./AdminSidebar";
 import { User, FileText, CheckCircle, AlertTriangle, X, Eye } from 'lucide-react';
 
 // Modal Components

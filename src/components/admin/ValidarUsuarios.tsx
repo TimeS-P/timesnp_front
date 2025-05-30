@@ -46,13 +46,13 @@ const ValidarUsuarios: React.FC = () => {
       setNotificationData({
         type: 'verificacion',
         title: 'Notificación/Verificación aprobada',
-        message: 'Hola Amalia, Tu identidad ha sido verificada correctamente. Ahora puedes continuar el proceso y comenzar a vender servicios en TimeSAP.'
+        message: `Hola ${selectedVerificacion.perfil.nombre}, Tu identidad ha sido verificada correctamente. Ahora puedes continuar el proceso y comenzar a vender servicios en TimeSAP.`
       });
     } else {
       setNotificationData({
         type: 'problema',
         title: 'Notificación/Problema con tu verificación de identidad',
-        message: 'Hola Amalia, No pudimos validar tu identidad con el documento que enviaste. Por favor, asegúrate de que sea una foto nítida y que muestra ambos lados del INE con recortes o reflejos.'
+        message: `Hola ${selectedVerificacion.perfil.nombre}, No pudimos validar tu identidad con el documento que enviaste. Por favor, asegúrate de que sea una foto nítida y que muestra ambos lados del INE con recortes o reflejos.`
       });
     }
     
