@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
 import CarruselCategoria from "../components/Servicios/Header/CarruselCategoria";
 import { getCategorias } from "../services/CategoriasAndServices/authService";
-import { getServiciosPorCategoria } from "../services/CategoriasAndServices/authService";
+import { getServiciosPorCategoria, getServiciosRecomendados } from "../services/CategoriasAndServices/authService";
 import { useEffect, useState } from "react";
 import TarjetaServicio from "../components/Servicios/Body/TarjetaServicio";
 import Filtrador from "../components/Servicios/Body/Filtrador";
@@ -62,6 +62,10 @@ interface ServicioInfo {
 function Servicios() {
   const [categories, setCategories] = useState<CategoriaInfo[]>([]);
   const [services, setServices] = useState<ServicioInfo[]>([]); // Cambia 'any' por el tipo adecuado para tus servicios
+
+  // Estado para los servicios recomendados
+  const [recommendedServices, setRecommendedServices] = useState<ServicioInfo[]>([]);
+
   const [selectedCategory, setSelectedCategory] = useState(
     "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaf"
   );
@@ -90,9 +94,21 @@ function Servicios() {
     }
   };
 
+  const fetchRecommendedServices = async () => {
+    try {
+      // Aquí deberías implementar la lógica para obtener los servicios recomendados
+      // Por ejemplo, podrías hacer una llamada a una API o filtrar los servicios existentes
+      const data = await getServiciosRecomendados();
+      setRecommendedServices(data);
+    } catch (error) {
+      console.error("Error fetching recommended services: ", error);
+    }
+  }
+
   // Aquí puedes obtener los servicios por categoría
   useEffect(() => {
     fetchServicesByCategory("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaf");
+    fetchRecommendedServices(); // Llama a la función para obtener servicios recomendados
   }, []);
 
   const handleFilterChange = (newFilter: string) => {
@@ -116,6 +132,31 @@ function Servicios() {
       <div className="flex justify-end my-8 mr-12">
         <Filtrador onFilterChange={handleFilterChange} />
       </div>
+
+      {/* Si existen  servicios recomendados los mostramos */}
+      {recommendedServices.length > 0 && (
+        <div className="container mx-auto mb-8 border border-gray-200 p-6 rounded-lg ">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Servicios Recomendados</h2>
+          <div className="grid grid-cols-3 gap-8">
+            {recommendedServices.map((service) => (
+              <TarjetaServicio
+                key={service.id}
+                id={service.id}
+                nombreServicio={service.nombre}
+                nombreProveedor={
+                  service.proveedorHasServicio.proveedor.perfil.nombre
+                }
+                calificacion={service.proveedorHasServicio.calificacion}
+                tipoPrecio={service.proveedorHasServicio.tipoPrecio.unidad_medida}
+                precio={service.precio}
+                descripcion={service.descripcion}
+                ubicacion="Ubicación del proveedor" // Cambia esto según tu lógica
+                disponibilidad="Lunes a Viernes" // Cambia esto según tu lógica
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-3 gap-8 mb-8 justify-items-center">
         {/* Aquí puedes mapear sobre tus servicios destacados */}

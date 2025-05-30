@@ -113,6 +113,18 @@ export const getServiciosPorCategoria = async (
   }
 };
 
+export const getServiciosRecomendados = async (): Promise<any[]> => {
+  try {
+    const response = await api.get<ServicioResponse>(
+      `/v1/recommendations`
+    );
+    return response.data.data; // Accedemos a data.data para obtener el array de servicios recomendados
+  } catch (error) {
+    console.error("Error fetching recommended services: ", error);
+    throw error;
+  }
+}
+
 export const getServicioPorId = async (
   id: string
 ): Promise<any[]> => {
