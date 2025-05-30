@@ -1,5 +1,6 @@
 import { UUID } from "crypto";
 import api from "../../lib/api/api";
+import { Usuario } from "../../types/ServiciosInterfaces/ServiciosInterfaces";
 
 interface CategoriaResponse {
   message: string;
@@ -23,6 +24,19 @@ interface SignedUrlResponse {
   message: string;
   data: string; // Cambia 'any' por el tipo adecuado para tus servicios
   OK: boolean;
+}
+
+export interface ReportesResponse {
+  message: string;
+  data: Reporte[]; // Cambia 'any' por el tipo adecuado para tus reportes
+  OK: boolean;
+}
+
+export interface Reporte {
+  id: string;
+  comentario: string;
+  fecha: string; // Cambia a `Date` si deseas manejar fechas como objetos Date
+  perfil: PerfilComplete; // Cambia `Perfil` si tienes una estructura definida para el perfil
 }
 
 // interface Usuario {
@@ -52,6 +66,22 @@ interface Perfil {
   // descripcion: string | null;
   // usuario: Usuario;
   // verificacion: any | null; // Cambia `any` si tienes una estructura definida
+}
+
+interface PerfilComplete {
+  id: string;
+  nombre: string;
+  apellidoPaterno: string | null;
+  apellidoMaterno: string | null;
+  telefono: string | null;
+  foto: string | null;
+  puntos: number;
+  codigoCompartir: string;
+  fechaNacimiento: string | null; // Cambia a `Date | null` si deseas manejar fechas como objetos Date
+  genero: string | null;
+  descripcion: string | null;
+  usuario: Usuario; // Cambia `Usuario` si tienes una estructura definida para el usuario
+  verificacion: any | null; // Cambia `any` si tienes una estructura definida
 }
 
 interface TipoPrecio {
@@ -153,6 +183,20 @@ export const getUrlDocumentoVerificacion = async (
     return response.data.data; // Retorna la URL del documento de verificación
   } catch (error) {
     console.error("Error fetching verification document URL: ", error);
+    throw error;
+  }
+}
+
+export const getAllReportes = async (): Promise<Reporte[]> => {
+  try {
+    const response = await api.get<ReportesResponse>(
+      `/reportes/todos`
+    );
+
+    console.log("Response from getAllReportes:", response.data);
+    return response.data.data; // Accedemos a data.data para obtener el array de reportes
+  } catch (error) {
+    console.error("Error fetching reports: ", error);
     throw error;
   }
 }

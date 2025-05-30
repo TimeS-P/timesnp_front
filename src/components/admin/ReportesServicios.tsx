@@ -1,8 +1,10 @@
-import { Reporte, ReportesResponse } from "./AdminSidebar";
+import { Reporte } from "../../services/CategoriasAndServices/authService";
+import {  } from "./AdminSidebar";
 import NotificationModal from "./NotificationModal";
 import ReporteModal from "./ReporteModal";
 import { User, FileText, CheckCircle, AlertTriangle, X, Eye } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
+import { getAllReportes } from "../../services/CategoriasAndServices/authService";
 
 const ReportesServicios: React.FC = () => {
   const [reportes, setReportes] = useState<Reporte[]>([]);
@@ -17,34 +19,23 @@ const ReportesServicios: React.FC = () => {
     message: ''
   });
 
-  useEffect(() => {
-    fetchReportes();
-  }, []);
 
   const fetchReportes = async () => {
     try {
-      setLoading(true);
-      const serviceId = "28a74521-0de7-4a98-9bc6-ec0a82f59055";
-      const response = await fetch(`http://localhost:8080/api/reportes/${serviceId}`);
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch reportes');
-      }
-      
-      const data: ReportesResponse = await response.json();
-      
-      if (data.OK) {
-        setReportes(data.data);
-      } else {
-        setError('Error al obtener los reportes');
-      }
+      const data = await getAllReportes();
+      console.log('Reportes obtenidos:', data);
+      setReportes(data);
     } catch (err) {
-      setError('Error de conexión con el servidor');
-      console.error('Error fetching reportes:', err);
+      setError('Error al cargar los reportes');
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchReportes();
+  }, []);
+
 
   const handleVerDetalles = (reporte: Reporte) => {
     setSelectedReporte(reporte);
@@ -129,7 +120,7 @@ const ReportesServicios: React.FC = () => {
                       <p className="font-medium text-gray-800">
                         {reporte.perfil.nombre} {reporte.perfil.apellidoPaterno}
                       </p>
-                      <p className="text-sm text-gray-500">Maquillaje profesional</p>
+                      <p className="text-sm text-gray-500">{reporte.comentario}</p>
                     </div>
                   </div>
                   <button 
