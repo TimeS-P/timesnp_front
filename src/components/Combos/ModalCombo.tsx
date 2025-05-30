@@ -149,7 +149,7 @@ const ModalCombo: React.FC<ModalDetalleComboProps> = ({ combo, onClose, isClient
         isOpen={isChatOpen}
         onClose={closeChat}
         chat={activeChat}
-        nombreServicio={"nombreServicio"}
+        nombreServicio={combo.nombre}
       />
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
         <Notification

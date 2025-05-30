@@ -25,12 +25,12 @@ const ContratacionPopup: React.FC<ContratacionPopupProps> = ({
 }) => {
   const jwtToken = sessionStorage.getItem("JWT-TOKEN");
   let decodedToken: CustomJWTPayload | null = null;
-
   if (jwtToken) {
     try {
       decodedToken = jwtDecode<CustomJWTPayload>(jwtToken);
     } catch (e) {
       decodedToken = null;
+      // Manejar el error o redirigir al login
     }
   }
   // Estados para cada sección
