@@ -76,7 +76,7 @@ export const createContratacion = async (formData: ContratacionFormData): Promis
       cantidad:  1,
       
       // Perfil del usuario (debes obtener esta información del contexto/estado de tu app)
-      perfilId: decodedToken.id_perfil, // Asegúrate de que el perfilId esté disponible
+      perfilId: decodedToken.id_perfil || "", // Asegúrate de que el perfilId esté disponible
       
       servicioGeneralId: "28a74521-0de7-4a98-9bc6-ec0a82f59055",
       // Campos adicionales

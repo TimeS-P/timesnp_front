@@ -18,7 +18,6 @@ import PaymentButtons from "./PaymentButtons";
 import { CustomJWTPayload } from "../../ts/interfaces/global";
 import { jwtDecode } from "jwt-decode";
 
-
 const ContratacionPopup: React.FC<ContratacionPopupProps> = ({
   isOpen,
   onClose,
@@ -132,7 +131,7 @@ const ContratacionPopup: React.FC<ContratacionPopupProps> = ({
   const handlePayment = (allFormData: AllFormData) => {
     // Aquí puedes hacer tu llamada a la API con todos los datos
     console.log("Datos completos para enviar a la API:", allFormData);
-    
+
     // Ejemplo de estructura de datos que recibirás:
     /*
     {
@@ -160,7 +159,7 @@ const ContratacionPopup: React.FC<ContratacionPopupProps> = ({
       pointsValue: number
     }
     */
-    
+
     // Aquí puedes agregar tu lógica de API
     alert(`Procesando pago de ${allFormData.totalPrice}...`);
     onClose();
