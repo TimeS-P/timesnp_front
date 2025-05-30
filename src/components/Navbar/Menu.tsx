@@ -4,6 +4,7 @@ import { IoMenu } from "react-icons/io5";
 import ModalLogin from "../Login/ModalLogin";
 import { jwtDecode } from "jwt-decode";
 import { CustomJWTPayload } from "../../ts/interfaces/global";
+import ModalRegistro from "../Register/ModalRegistro";
 
 function Menu() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -121,12 +122,7 @@ function Menu() {
                   </button>
                 </li>
                 <li>
-                  <a
-                    href="/registro"
-                    className="block w-full text-left px-4 py-3 text-sm font-medium text-[#162C51] hover:bg-gray-50 transition-colors duration-150"
-                  >
-                    Registrarse
-                  </a>
+                  <ModalRegistro />
                 </li>
               </ul>
             )}
