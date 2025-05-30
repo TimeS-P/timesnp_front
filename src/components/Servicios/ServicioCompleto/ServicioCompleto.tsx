@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Star, MapPin, Calendar, User, Heart } from "lucide-react";
 import ReviewsSection from "./ReviewsSection";
 import PhotoGallery from "./PhotoGalley";
 import ContratacionPopup from "../../Contratacion/ContratacionPopup";
 import { useParams } from "react-router-dom";
+import { IoIosChatboxes } from "react-icons/io";
+import ChatModal, { ChatResponse } from "../../Combos/Chat";
+import { createChat, getUserId } from "../../../services/Chat/chatService";
 
 interface Domicilio {
   calle: string;
@@ -26,6 +29,7 @@ interface ProveedorInfo {
 
 interface ServicioCompletoProps {
   serviceData?: {
+    id: string;
     name: string;
     rating: number;
     reviews: number;
@@ -45,6 +49,66 @@ interface ServicioCompletoProps {
 
 const ServicioCompleto: React.FC<ServicioCompletoProps> = ({ serviceData }) => {
   const [activeTab, setActiveTab] = useState("description");
+  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
+  const [userId, setUserId] = useState<string>("");
+  const [activeChat, setActiveChat] = useState<ChatResponse>(
+      {
+        data: {
+          id: "",
+          servicioGeneral: {
+            id: "",
+            nombre: "",
+            descripcion: "",
+            precio: 0,
+            tipoServicio: "",
+            proveedorHasServicio: null,
+            contrataciones: [],
+            fotos: [],
+            reportes: [],
+            mensajes: []
+          }
+        }
+      }
+    );
+
+  const getUser = async () => {
+      try {
+          const response = await getUserId();
+          console.log("UserId: ", response);
+          setUserId(response.data);
+      } catch (error) {
+          console.error("Error al obtener el ID del usuario: ", error);
+      }
+    }
+
+  useEffect(() => {
+      getUser();
+    }
+  , []);
+
+  const setChat = async () => {
+        try {
+          if (!serviceData) {
+            throw new Error("No hay datos del servicio disponibles.");
+          }
+          const response = await createChat(serviceData.id);
+          console.log("Chat creado: ", response);
+          setActiveChat(response);
+        } catch (error) {
+          console.error("Error al crear el chat: ", error);
+        }
+    }
+  
+  const openChat = () => {
+      console.log("UserId: "+userId)
+      setChat();
+      setIsChatOpen(true);
+      
+    };
+
+    const closeChat = () => {
+      setIsChatOpen(false);
+    };
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   // Datos del perfil - usar datos reales o valores por defecto
@@ -116,6 +180,14 @@ const ServicioCompleto: React.FC<ServicioCompletoProps> = ({ serviceData }) => {
 
   return (
     <div className="min-h-screen py-4">
+      <ChatModal
+        chatId={"ChatId"}
+        userId={userId}
+        isOpen={isChatOpen}
+        onClose={closeChat}
+        chat={activeChat}
+        nombreServicio={serviceData?.serviceTitle}
+      />
       <div className="max-w-6xl mx-auto bg-white p-8">
         {/* Header */}
         <div className="flex justify-between items-start mb-6">
@@ -175,6 +247,11 @@ const ServicioCompleto: React.FC<ServicioCompletoProps> = ({ serviceData }) => {
               className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors"
             >
               Contratar
+            </button>
+            <button 
+            className="text-xl w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors mt-5 flex items-center justify-center gap-2"
+            onClick={openChat}>
+              <IoIosChatboxes />
             </button>
           </div>
         </div>

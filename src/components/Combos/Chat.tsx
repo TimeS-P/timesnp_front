@@ -142,7 +142,7 @@ const ChatModal = ({ chat, userId, isOpen, onClose, nombreServicio = 'Chat' }: C
                     msg.emisor === userId ? 'text-right' : 'text-left'
                   }`}
                 >
-                  {new Date(msg.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  {msg.fecha}
                 </div>
               </div>
             ))

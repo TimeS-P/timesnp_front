@@ -40,6 +40,7 @@ function GetServicioCompleto() {
   const transformServiceData = (serviceData: Servicio): ServicioTransformado | null => {
     if (!serviceData) return null;
 
+    const id = serviceData.id;
     const proveedor = serviceData.idProveedorHasServicio?.proveedor;
     const perfil = proveedor?.perfil;
     const usuario = perfil?.usuario;
@@ -66,6 +67,7 @@ function GetServicioCompleto() {
     const diasDisponibles = DIAS_SEMANA.filter(dia => !diasLibres.includes(dia));
 
     return {
+      id: id,
       name: `${perfil?.nombre || ''} ${perfil?.apellidoPaterno || ''} ${perfil?.apellidoMaterno || ''}`.trim(),
       rating: serviceData.idProveedorHasServicio?.calificacion || 0,
       reviews: reviews.length,

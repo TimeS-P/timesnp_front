@@ -110,6 +110,7 @@ export interface Resena {
 
 // Interface para los datos transformados que espera el componente ServicioCompleto
 export interface ServicioTransformado {
+  id: string;
   name: string;
   rating: number;
   reviews: number;
