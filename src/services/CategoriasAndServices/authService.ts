@@ -1,6 +1,7 @@
 import { UUID } from "crypto";
 import api from "../../lib/api/api";
 import { Usuario } from "../../types/ServiciosInterfaces/ServiciosInterfaces";
+import { FormData } from "../../components/Register/ModalRegistroContent";
 
 interface CategoriaResponse {
   message: string;
@@ -115,6 +116,12 @@ interface Servicio {
   idCombo: string | null;
 }
 
+interface UsuarioResponse {
+  message: string;
+  data: Usuario; // Cambia `Usuario` si tienes una estructura definida
+  OK: boolean;
+}
+
 
 export const getCategorias = async (): Promise<CategoriaInfo[]> => {
   try {
@@ -197,6 +204,22 @@ export const getAllReportes = async (): Promise<Reporte[]> => {
     return response.data.data; // Accedemos a data.data para obtener el array de reportes
   } catch (error) {
     console.error("Error fetching reports: ", error);
+    throw error;
+  }
+}
+
+export const registrarUsuario = async (
+  formData: Omit<FormData, 'confirmPassword' | 'apellido'> // Omite confirmPassword y apellido del tipo FormData
+): Promise<Usuario> => {
+  try {
+    // Ommit confirmPassword y apellido from the formData
+    const response = await api.post<UsuarioResponse>(
+      `/auth/register`,
+      formData
+    );
+    return response.data.data; // Retorna el usuario registrado
+  } catch (error) {
+    console.error("Error registering user: ", error);
     throw error;
   }
 }

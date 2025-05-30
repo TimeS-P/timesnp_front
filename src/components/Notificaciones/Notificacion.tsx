@@ -6,7 +6,7 @@ interface NotificationProps {
   message: string;
   isSuccess: boolean;
   onClose: () => void;
-}
+} 
 
 const Notification: React.FC<NotificationProps> = ({ show, message, isSuccess, onClose }) => {
   if (!show) return null;

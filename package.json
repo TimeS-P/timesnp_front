@@ -12,11 +12,13 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@heroui/react": "^2.7.8",
     "@mui/material": "^6.4.7",
     "@nextui-org/react": "^2.6.11",
     "@stomp/stompjs": "^7.1.1",
     "@types/js-cookie": "^3.0.6",
     "axios": "^1.8.3",
+    "framer-motion": "^12.15.0",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.477.0",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@iconify/react": "^6.0.0",
     "@types/node": "^22.13.10",
     "@types/react": "^19.0.11",
     "@types/react-dom": "^19.0.3",
