@@ -1,5 +1,6 @@
 // types/index.ts
 export interface ContratacionData {
+  id: string;
   nombre: string;
   rating: number;
   reviews: number;

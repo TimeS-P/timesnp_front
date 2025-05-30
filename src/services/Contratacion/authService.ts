@@ -13,6 +13,19 @@ if (jwtToken) {
   }
 }
 
+export interface GetContratacion{
+  id: string;
+  fechaInicio: string;
+  fechaFin: string;
+  total: number;
+  cantidad?: number;
+  resenas?: {
+    id: string;
+    comentario: string;
+    calificacion: number;
+  }[];
+}
+
 export interface ContratacionDTO {
   fechaInicio: string;
   fechaFin: string;
@@ -39,6 +52,7 @@ export interface ContratacionFormData {
   pointsDiscount: number;
   pointsValue: number;
   providerData: {
+    id: string;
     availability: string;
     avatar: string;
     nombre: string;
@@ -78,7 +92,7 @@ export const createContratacion = async (formData: ContratacionFormData): Promis
       // Perfil del usuario (debes obtener esta información del contexto/estado de tu app)
       perfilId: decodedToken.id_perfil || "", // Asegúrate de que el perfilId esté disponible
       
-      servicioGeneralId: "28a74521-0de7-4a98-9bc6-ec0a82f59055",
+      servicioGeneralId: formData.providerData.id,
       // Campos adicionales
       codigoCompartir: formData.referralCode || "HOLA",
       usePoints: formData.usePoints
@@ -125,6 +139,68 @@ export const sendEmail = async (emailData: EmailFormData): Promise<ResponseEmail
     return response.data;
   } catch (error) { 
     console.error("Error sending email: ", error);
+    throw error;
+  }
+}
+
+export const getContratacionesByPerfil = async (perfilId: string): Promise<GetContratacion[]> => {
+  try {
+    const response = await api.get<GetContratacion[]>(
+      `http://localhost:8080/api/contratacion/getContrataciones`,
+      {
+        params: {
+          perfilId: perfilId,
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching contrataciones by perfil: ", error);
+    throw error;
+  }
+}
+
+export interface ResenaDTO {
+  comentario: string;
+  calificacion: number;
+  contratacionId: string;
+}
+
+export const crearResena = async (resenaDTO: ResenaDTO): Promise<{ message: string }> => {
+  try {
+    const response = await api.post<{ message: string }>(
+      "http://localhost:8080/api/resena/crearResena",
+      resenaDTO
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error creating resena: ", error);
+    throw error;
+  }
+}
+
+export interface ReporteDTO {
+  idPerfil: string;
+  comentario: string;
+  idContratacion: string;
+}
+
+
+interface ReporteResponse {
+  message: string;
+  data: null;
+  OK: boolean;
+}
+
+export const crearReporte = async (reporteDTO: ReporteDTO): Promise<{ message: string }> => {
+  try {
+    const response = await api.post<ReporteResponse>(
+      "http://localhost:8080/api/reportes/crearReporte",
+      reporteDTO
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error creating resena: ", error);
     throw error;
   }
 }

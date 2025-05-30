@@ -16,27 +16,7 @@ interface ReviewsSectionProps {
 const ReviewsSection = ({ reviewsData }: ReviewsSectionProps) => {
   // Usar datos reales si existen, si no usar datos por defecto
   const reviews = reviewsData && reviewsData.length > 0 ? reviewsData : [
-    {
-      name: "Estela Martínez Alcalá",
-      date: "15/03/2025",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&h=60&fit=crop&crop=face",
-      comment: "¡Increíble experiencia! El maquillaje duró toda la noche y recibí muchísimos cumplidos. Definitivamente volveré para mi próximo evento.",
-      rating: 5
-    },
-    {
-      name: "María Gabriela Tovar", 
-      date: "09/05/2024",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=face",
-      comment: "¡Increíble experiencia! El maquillaje duró toda la noche y recibí muchísimos cumplidos. Definitivamente volveré para mi próximo evento.",
-      rating: 5
-    },
-    {
-      name: "Alma Espinoza García",
-      date: "18/06/2024",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616c619e39e?w=60&h=60&fit=crop&crop=face",
-      comment: "¡Increíble experiencia! El maquillaje duró toda la noche y recibí muchísimos cumplidos. Definitivamente volveré para mi próximo evento.",
-      rating: 5
-    }
+    
   ];
 
   return (

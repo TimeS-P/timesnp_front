@@ -1,13 +1,18 @@
 import { UUID } from "crypto";
 import CarruselCategoria from "../components/Servicios/Header/CarruselCategoria";
 import { getCategorias } from "../services/CategoriasAndServices/authService";
-import { getServiciosPorCategoria, getServiciosRecomendados } from "../services/CategoriasAndServices/authService";
+import {
+  getServiciosPorCategoria,
+  getServiciosRecomendados,
+} from "../services/CategoriasAndServices/authService";
 import { useEffect, useState } from "react";
 import TarjetaServicio from "../components/Servicios/Body/TarjetaServicio";
 import Filtrador from "../components/Servicios/Body/Filtrador";
 import { CustomJWTPayload } from "../ts/interfaces/global";
 import { jwtDecode } from "jwt-decode";
 import FormularioCrearServicio from "../components/Servicios/FormularioCrearServicio";
+import TarjetaServicioIA from "../components/Servicios/Body/TarjetaServicioIA";
+import { Brain, Sparkles } from "lucide-react";
 
 const jwtToken = sessionStorage.getItem("JWT-TOKEN");
 let decodedToken: CustomJWTPayload | null = null;
@@ -87,7 +92,9 @@ function Servicios() {
   const [services, setServices] = useState<ServicioInfo[]>([]); // Cambia 'any' por el tipo adecuado para tus servicios
 
   // Estado para los servicios recomendados
-  const [recommendedServices, setRecommendedServices] = useState<ServicioInfo[]>([]);
+  const [recommendedServices, setRecommendedServices] = useState<
+    ServicioInfo[]
+  >([]);
 
   const [selectedCategory, setSelectedCategory] = useState(
     "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaf"
@@ -127,7 +134,7 @@ function Servicios() {
     } catch (error) {
       console.error("Error fetching recommended services: ", error);
     }
-  }
+  };
 
   // Aquí puedes obtener los servicios por categoría
   useEffect(() => {
@@ -145,7 +152,7 @@ function Servicios() {
     try {
       // Aquí irá tu lógica para hacer el POST al API
       console.log("Datos del formulario:", data);
-      
+
       // Ejemplo de cómo podrías estructurar los datos para el POST:
       const postData = {
         nombre: data.nombre,
@@ -153,9 +160,9 @@ function Servicios() {
         precio: data.precio,
         categoriaId: data.categoriaId,
         tipoPrecioId: data.tipoPrecioId,
-        diasLibres: data.diasLibres
+        diasLibres: data.diasLibres,
       };
-      
+
       // Aquí harías el fetch POST a tu API
       // const response = await fetch('/api/servicios', {
       //   method: 'POST',
@@ -165,12 +172,11 @@ function Servicios() {
       //   },
       //   body: JSON.stringify(postData)
       // });
-      
+
       // if (response.ok) {
       //   // Refrescar la lista de servicios
       //   await fetchServicesByCategory(selectedCategory);
       // }
-      
     } catch (error) {
       console.error("Error al crear servicio:", error);
       throw error;
@@ -233,25 +239,52 @@ function Servicios() {
 
       {/* Si existen  servicios recomendados los mostramos */}
       {recommendedServices.length > 0 && (
-        <div className="container mx-auto mb-8 border border-gray-200 p-6 rounded-lg ">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Servicios Recomendados</h2>
-          <div className="grid grid-cols-3 gap-8">
-            {recommendedServices.map((service) => (
-              <TarjetaServicio
-                key={service.id}
-                id={service.id}
-                nombreServicio={service.nombre}
-                nombreProveedor={
-                  service.proveedorHasServicio.proveedor.perfil.nombre
-                }
-                calificacion={service.proveedorHasServicio.calificacion}
-                tipoPrecio={service.proveedorHasServicio.tipoPrecio.unidad_medida}
-                precio={service.precio}
-                descripcion={service.descripcion}
-                ubicacion="Ubicación del proveedor" // Cambia esto según tu lógica
-                disponibilidad="Lunes a Viernes" // Cambia esto según tu lógica
-              />
-            ))}
+        <div className="container mx-auto mb-12">
+          {/* Header con diseño mejorado */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full shadow-lg">
+              <Brain size={24} />
+              <h2 className="text-2xl font-bold">Recomendados por IA</h2>
+              <Sparkles size={20} />
+            </div>
+            <p className="text-gray-600 mt-3 text-lg">
+              Servicios seleccionados especialmente para ti por nuestra
+              inteligencia artificial
+            </p>
+          </div>
+
+          {/* Grid de servicios recomendados */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+            {recommendedServices.map((service, index) => {
+              // Generar razones de recomendación dinámicas
+              const razones = [
+                "Altamente valorado por usuarios con gustos similares",
+                "Excelente relación calidad-precio según nuestro análisis",
+                "Proveedor con historial excepcional de satisfacción",
+                "Tendencia al alza en popularidad en tu área",
+                "Especialista reconocido en esta categoría",
+              ];
+
+              return (
+                <TarjetaServicioIA
+                  key={service.id}
+                  id={service.id}
+                  nombreServicio={service.nombre}
+                  nombreProveedor={
+                    service.idProveedorHasServicio.proveedor.perfil.nombre
+                  }
+                  calificacion={service.idProveedorHasServicio.calificacion}
+                  tipoPrecio={
+                    service.idProveedorHasServicio.tipoPrecio.unidad_medida
+                  }
+                  precio={service.precio}
+                  descripcion={service.descripcion}
+                  ubicacion="Ubicación del proveedor"
+                  disponibilidad="Lunes a Viernes"
+                  razonRecomendacion={razones[index % razones.length]}
+                />
+              );
+            })}
           </div>
         </div>
       )}
