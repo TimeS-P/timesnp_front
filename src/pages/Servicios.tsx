@@ -185,7 +185,7 @@ function Servicios() {
     }
 
     // Verificar si está verificado
-    if (decodedToken.isVerified) {
+    if (!decodedToken.isVerified) {
       return (
         <div className="flex justify-center my-6">
           <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded-lg">
