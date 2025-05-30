@@ -159,6 +159,7 @@ const ServicioCompleto: React.FC<ServicioCompletoProps> = ({ serviceData }) => {
 
   // Preparar datos para el popup de contratación
   const contratacionData = {
+    id: serviceData?.id ?? "",
     nombre: profile.name,
     rating: profile.rating,
     reviews: profile.reviews,
