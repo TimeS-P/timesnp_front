@@ -57,3 +57,22 @@ export const updateUserInfo = async (PerfilDTO: UpdateUserInfo): Promise<UpdateU
     throw error;
   }
 };
+
+// Tercero, creamos una funcion para verificar si existe el perfil por codigoCompartir
+export const checkProfileByCode = async (codigoCompartir: string): Promise<UserInfoResponse> => {
+  try {
+    const response = await api.get<UserInfoResponse>(
+      `http://localhost:8080/api/perfil/existsByCode`,
+      {
+        params: {
+          codigoCompartir,
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error checking profile by code: ", error);
+    throw error;
+  }
+};
+

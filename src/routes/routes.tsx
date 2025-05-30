@@ -7,6 +7,7 @@ import ServicioCompleto from "../components/Servicios/ServicioCompleto/ServicioC
 import GetServicioCompleto from "../pages/GetServicioCompleto";
 import Combos from "../pages/Combos";
 import Chat from "../pages/Chat";
+import Admin from "../pages/Admin";
 
 const AppRoutes = () => {
   return (
@@ -18,6 +19,8 @@ const AppRoutes = () => {
       <Route path="/servicios/:id" element={<GetServicioCompleto />} />
       <Route path="/combos" element={<Combos/>} />
       <Route path="/chat" element={<Chat/>} />
+      {/* Admin Route */}
+      <Route path="/admin" element={<Admin/>} />
     </Routes>
   );
 };

@@ -43,14 +43,9 @@ const ReviewsSection = ({ reviewsData }: ReviewsSectionProps) => {
     <div className="space-y-4">
       {reviews.map((review, index) => (
         <div key={index} className="flex gap-4 p-4 bg-gray-50 rounded-lg">
-          <img
-            src={review.avatar}
-            alt={review.name}
-            className="w-12 h-12 rounded-full object-cover flex-shrink-0"
-          />
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <h4 className="font-semibold text-gray-900">Alejandro Gutiérrez</h4>
+              <h4 className="font-semibold text-gray-900">Anonimo</h4>
             </div>
             <div className="flex gap-1 mb-2">
               {[1, 2, 3, 4, 5].map((star) => (
