@@ -1,13 +1,16 @@
 import { User, FileText, CheckCircle, AlertTriangle, X, Eye } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { mockUsuarios } from './AdminSidebar';
 import NotificationModal from './NotificationModal';
 import IdentityVerificationModal from './IdentityVerificationModal';
+import { getVerificacionesPendientes } from '../../services/CategoriasAndServices/authService';
 
 
 const ValidarUsuarios: React.FC = () => {
-  const [usuarios] = useState(mockUsuarios);
-  const [selectedUsuario, setSelectedUsuario] = useState<any>(null);
+
+  const [verificacionesPendientes, setVerificacionesPendientes] = useState<any[]>([]);
+
+  const [selectedVerificacion, setSelectedVerificacion] = useState<any>(null);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [notificationData, setNotificationData] = useState({
@@ -16,8 +19,23 @@ const ValidarUsuarios: React.FC = () => {
     message: ''
   });
 
-  const handleVerificar = (usuario: any) => {
-    setSelectedUsuario(usuario);
+  useEffect(() => {
+    const fetchVerificaciones = async () => {
+      try {
+        const data = await getVerificacionesPendientes();
+        if (data) {
+            setVerificacionesPendientes(data);
+        }
+      } catch (error) {
+        console.error('Error fetching verificaciones:', error);
+      }
+    };
+
+    fetchVerificaciones();
+  }, []);
+
+  const handleVerificar = (verificacion: any) => {
+    setSelectedVerificacion(verificacion);
     setShowVerificationModal(true);
   };
 
@@ -54,7 +72,7 @@ const ValidarUsuarios: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
           {/* Validar usuarios section */}
           <div className="bg-white rounded-lg shadow-sm">
             <div className="p-6 border-b border-gray-200">
@@ -62,16 +80,16 @@ const ValidarUsuarios: React.FC = () => {
             </div>
             
             <div className="divide-y divide-gray-200">
-              {usuarios.map((usuario) => (
-                <div key={usuario.id} className="p-4 flex items-center justify-between hover:bg-gray-50">
+              {verificacionesPendientes.map((verificacion) => (
+                <div key={verificacion.id} className="p-4 flex items-center justify-between hover:bg-gray-50">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 bg-orange-400 rounded-full flex items-center justify-center">
                       <User size={20} className="text-white" />
                     </div>
-                    <span className="font-medium text-gray-800">{usuario.nombre}</span>
+                    <span className="font-medium text-gray-800">{verificacion.perfil.nombre} {verificacion.perfil.apellidoPaterno} {verificacion.perfil.apellidoMaterno}</span>
                   </div>
                   <button 
-                    onClick={() => handleVerificar(usuario)}
+                    onClick={() => handleVerificar(verificacion)}
                     className="text-gray-400 hover:text-gray-600"
                   >
                     <Eye size={20} />
@@ -81,71 +99,14 @@ const ValidarUsuarios: React.FC = () => {
             </div>
           </div>
 
-          {/* Verificación de identidad section */}
-          <div className="bg-white rounded-lg shadow-sm">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-800">Verificación de identidad</h2>
-            </div>
-            
-            <div className="p-4">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-10 h-10 bg-orange-400 rounded-full flex items-center justify-center">
-                  <User size={20} className="text-white" />
-                </div>
-                <span className="font-medium text-gray-800">Amalia Rosas Fuente</span>
-              </div>
-              
-              {/* Mock ID Document Display */}
-              <div className="mb-6 p-4 border-2 border-dashed border-gray-300 rounded-lg">
-                <div className="bg-gradient-to-r from-pink-100 to-pink-50 p-4 rounded-lg">
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-20 bg-gray-200 rounded flex items-center justify-center">
-                      <User size={24} className="text-gray-400" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="text-xs space-y-1">
-                        <p className="font-semibold">INSTITUTO NACIONAL ELECTORAL</p>
-                        <p>CREDENCIAL PARA VOTAR</p>
-                        <p className="mt-2 font-medium">GOMEZ</p>
-                        <p className="font-medium">MARGARITA</p>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="w-12 h-12 bg-black border-2 border-gray-300"></div>
-                      <div className="w-12 h-12 bg-black border-2 border-gray-300"></div>
-                      <div className="w-6 h-6 bg-black border border-gray-300"></div>
-                    </div>
-                  </div>
-                  <div className="mt-2 text-xs">
-                    <p>CURP: GOMM760527MDFXXX08</p>
-                    <p>IDMEX1836577170&lt;074711637584Z</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex gap-3">
-                <button 
-                  onClick={() => handleVerificationAction('rechazar')}
-                  className="flex-1 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition-colors"
-                >
-                  Rechazar
-                </button>
-                <button 
-                  onClick={() => handleVerificationAction('validar')}
-                  className="flex-1 bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors"
-                >
-                  Validar
-                </button>
-              </div>
-            </div>
-          </div>
+          
         </div>
       </div>
 
       <IdentityVerificationModal
         isOpen={showVerificationModal}
         onClose={() => setShowVerificationModal(false)}
-        usuario={selectedUsuario}
+        verificacion={selectedVerificacion}
         onAction={handleVerificationAction}
       />
 

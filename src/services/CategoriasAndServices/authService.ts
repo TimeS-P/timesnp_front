@@ -19,6 +19,12 @@ interface ServicioResponse {
   OK: boolean;
 }
 
+interface SignedUrlResponse {
+  message: string;
+  data: string; // Cambia 'any' por el tipo adecuado para tus servicios
+  OK: boolean;
+}
+
 // interface Usuario {
 //   id: string;
 //   email: string;
@@ -124,6 +130,33 @@ export const getServiciosRecomendados = async (): Promise<any[]> => {
     throw error;
   }
 }
+
+export const getVerificacionesPendientes = async (): Promise<any[]> => {
+  try {
+    const response = await api.get<ServicioResponse>(
+      `/verificacionesadmin/pendientes`
+    );
+    return response.data.data; // Accedemos a data.data para obtener el array de servicios con verificaciones pendientes
+  } catch (error) {
+    console.error("Error fetching pending verifications: ", error);
+    throw error;
+  }
+}
+
+export const getUrlDocumentoVerificacion = async (
+  fileName: string
+): Promise<string> => {
+  try {
+    const response = await api.get<SignedUrlResponse>(
+      `/verificacionesadmin/generate-url/${fileName}`
+    );
+    return response.data.data; // Retorna la URL del documento de verificación
+  } catch (error) {
+    console.error("Error fetching verification document URL: ", error);
+    throw error;
+  }
+}
+
 
 export const getServicioPorId = async (
   id: string
