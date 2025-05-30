@@ -10,9 +10,15 @@ import { jwtDecode } from "jwt-decode";
 import ContratacionSuccess from "./ContratacionSuccess";
 
 const jwtToken = sessionStorage.getItem("JWT-TOKEN");
-const decodedToken: CustomJWTPayload = jwtDecode<CustomJWTPayload>(
-  jwtToken || ""
-);
+let decodedToken: CustomJWTPayload | null = null;
+
+if (jwtToken) {
+  try {
+    decodedToken = jwtDecode<CustomJWTPayload>(jwtToken);
+  } catch (e) {
+    decodedToken = null;
+  }
+}
 
 interface PaymentButtonsProps {
   allFormData: AllFormData;

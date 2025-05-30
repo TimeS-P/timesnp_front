@@ -3,7 +3,15 @@ import { CustomJWTPayload } from "../../ts/interfaces/global";
 import { jwtDecode } from "jwt-decode";
 
 const jwtToken = sessionStorage.getItem("JWT-TOKEN");
-const decodedToken: CustomJWTPayload = jwtDecode<CustomJWTPayload>(jwtToken || "");
+let decodedToken: CustomJWTPayload | null = null;
+
+if (jwtToken) {
+  try {
+    decodedToken = jwtDecode<CustomJWTPayload>(jwtToken);
+  } catch (e) {
+    decodedToken = null;
+  }
+}
 
 export interface ContratacionDTO {
   fechaInicio: string;
@@ -68,7 +76,7 @@ export const createContratacion = async (formData: ContratacionFormData): Promis
       cantidad:  1,
       
       // Perfil del usuario (debes obtener esta información del contexto/estado de tu app)
-      perfilId: decodedToken.id_perfil, // Asegúrate de que el perfilId esté disponible
+      perfilId: decodedToken.id_perfil || "", // Asegúrate de que el perfilId esté disponible
       
       servicioGeneralId: "28a74521-0de7-4a98-9bc6-ec0a82f59055",
       // Campos adicionales
